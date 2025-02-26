@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   title: "Prasunet Company-IT Consulting | IT Services | Digital Transformation",
@@ -18,6 +19,7 @@ export default function RootLayout({
       <body className="transition-colors duration-200 ease-in-out" suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
+          <SpeedInsights />
         </ThemeProvider>
       </body>
     </html>
