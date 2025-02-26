@@ -39,8 +39,10 @@ const ContactForm = () => {
         setAlertMessage(`❌ Error: ${result.error}`);
       }
     } catch (error) {
+      console.error("Error sending message:", error); // Log the actual error
       setAlertMessage("❌ Failed to send message. Try again!");
     }
+    
 
     setLoading(false);
   };

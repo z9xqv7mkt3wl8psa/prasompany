@@ -30,8 +30,10 @@ export function Footer() {
         setEmail(""); // Reset the input field after successful subscription
       }
     } catch (error) {
+      console.error("Error occurred:", error); // Log the actual error
       setMessage("Something went wrong.");
-    } finally {
+    }
+     finally {
       setLoading(false);
     }
   };

@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import Image from "next/image";
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -77,8 +78,8 @@ const ContactUs = () => {
     <div className="flex flex-col lg:flex-row items-center justify-between min-h-screen p-6 lg:p-20 bg-blue-100">
       {/* Left Form Section */}
       <div className="bg-white shadow-lg rounded-lg p-8 lg:w-1/2 w-full">
-        <h2 className="text-4xl font-bold text-gray-900">Let's work together</h2>
-        <p className="text-gray-600 mt-2">Fill out the form and let's discuss your project needs.</p>
+        <h2 className="text-4xl font-bold text-gray-900">{"Let's work together"}</h2>
+        <p className="text-gray-600 mt-2">{"Fill out the form and let's discuss your project needs."}</p>
 
         <form className="mt-6" onSubmit={handleSubmit}>
           {/* Name Fields */}
@@ -202,8 +203,14 @@ const ContactUs = () => {
       </div>
       {/* Right Image Section */}
       <div className="hidden lg:block lg:w-1/2">
-        <img src="/b1.jpg" alt="Team working" className="rounded-lg shadow-lg w-full h-auto" />
-      </div>
+  <Image 
+    src="/b1.jpg" 
+    alt="Team working" 
+    width={800} // Adjust width
+    height={500} // Adjust height
+    className="rounded-lg shadow-lg w-full h-auto" 
+  />
+</div>
     </div>
   );
 };

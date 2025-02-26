@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Linkedin, Github } from "lucide-react";
+import Image from "next/image";
 
 interface FormData {
   firstName: string;
@@ -159,11 +160,13 @@ const CareerApplicationForm = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-3xl mx-auto">
           <div className="mb-8 w-screen -mx-[calc((100vw-100%)/2)] overflow-hidden relative">
-            <img
-              src="/img3.jpg"
-              alt="Company Logo"
-              className="w-full h-96 object-cover rounded-none shadow-lg"
-            />
+          <Image
+  src="/img3.jpg"
+  alt="Company Logo"
+  width={1920} // Adjust based on image resolution
+  height={384} // Adjust to match aspect ratio (96 * 4)
+  className="w-full h-96 object-cover rounded-none shadow-lg"
+/>
             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
               <h1 className="text-4xl font-serif font-bold text-white">Home / Career</h1>
             </div>

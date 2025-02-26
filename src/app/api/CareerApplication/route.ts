@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     }
 
     // Save to Prisma database
-    const newApplication = await prisma.careerApplication.create({
+   await prisma.careerApplication.create({
       data: {
         firstName,
         lastName,

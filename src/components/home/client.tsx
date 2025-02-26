@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const clients = [
   "/clients/clientimg1.png",
@@ -33,7 +34,7 @@ const ClientSection = () => {
       <div className="text-center mb-8">
         <h2 className="text-5xl font-extrabold text-gray-900 mb-4">Our Clients</h2>
         <p className="bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent font-bold text-xl">
-        We're not just crafting software, We're sculpting your business's success.
+       {" We're not just crafting software, We're sculpting your business's success."}
         </p>
       </div>
 
@@ -48,12 +49,16 @@ const ClientSection = () => {
           transition={{ duration: 0.8, ease: "easeInOut" }}
         >
           {clients.slice(index, index + groupSize).map((logo, idx) => (
-            <img
+
+            <Image
               key={idx}
               src={logo}
               alt={`Client ${idx + 1}`}
+              width={128} // Adjust width (32 * 4, since w-32 = 128px)
+              height={128} // Adjust height (if needed)
               className="w-32 h-auto rounded-xl shadow-lg transition-transform transform hover:scale-105"
             />
+            
           ))}
         </motion.div>
       </div>

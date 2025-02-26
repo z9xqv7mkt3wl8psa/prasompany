@@ -18,6 +18,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true, contact }, { status: 201 });
   } catch (error) {
+    console.error("Error in contact form submission:", error);
     return NextResponse.json({ success: false, error: "Something went wrong!" }, { status: 500 });
-  }
+  }  
 }
