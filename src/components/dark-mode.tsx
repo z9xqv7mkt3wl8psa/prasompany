@@ -15,7 +15,7 @@ export function ModeToggle() {
 
   if (!mounted) return null; // Prevents hydration mismatch
 
-  const currentTheme = theme === "system" ? systemTheme : theme;
+  const currentTheme = theme === "system" ? systemTheme ?? "light" : theme;
   const isDark = currentTheme === "dark";
 
   return (
@@ -23,7 +23,7 @@ export function ModeToggle() {
       <Sun className={`h-5 w-5 text-yellow-500 transition ${isDark ? "opacity-0" : "opacity-100"}`} />
       
       <Switch
-        checked={isDark}
+        checked={isDark ?? false} 
         onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
         className="relative"
       />
