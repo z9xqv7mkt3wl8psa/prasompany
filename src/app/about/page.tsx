@@ -31,11 +31,10 @@ const About = () => {
       <section className="lg:mt-14 sm:mt-10 mt-12">
   <Image
     className="w-full rounded-lg shadow-lg"
-    src="https://i.ibb.co/GvwJnvn/Group-736.png"
+    src="/Group.png"
     alt="Group of people Chilling"
     width={800} // Adjust the width
     height={400} // Adjust the height
-    layout="responsive" // Makes it responsive
   />
 </section>
 

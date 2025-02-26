@@ -1,3 +1,4 @@
+"use client";
 import { Clock, Gift, Users, Award } from "lucide-react";
 
 const Stats = () => {

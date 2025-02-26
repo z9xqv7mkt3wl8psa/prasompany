@@ -16,7 +16,12 @@ export function Navbar() {
           {/* Left Section - Logo & Brand Name */}
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center space-x-2">
-              <Image src="/loggo.jpg" alt="Prasunet Logo" width={40} height={40} />
+              <Image
+                src="/loggo.jpg"
+                alt="Prasunet Logo"
+                width={40}
+                height={40}
+              />
               <span className="text-2xl font-extrabold tracking-wide">
                 <span className="bg-gradient-to-r from-blue-500 to-indigo-600 bg-clip-text text-transparent">
                   Prasu
@@ -46,13 +51,13 @@ export function Navbar() {
 
             {/* Internship Page */}
             <Link
-  href="https://docs.google.com/forms/d/e/1FAIpQLSd_IXUmj1XFUT8ydvWbqoWJ9ImZffOsc0rHwsMHICO_E5F5dA/viewform"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="relative font-bold text-xl tracking-tight text-muted-foreground transition-all duration-300 hover:text-blue-400 hover:underline underline-offset-8 decoration-2"
->
-  Internship
-</Link>
+              href="https://docs.google.com/forms/d/e/1FAIpQLSd_IXUmj1XFUT8ydvWbqoWJ9ImZffOsc0rHwsMHICO_E5F5dA/viewform"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative font-bold text-xl tracking-tight text-muted-foreground transition-all duration-300 hover:text-blue-400 hover:underline underline-offset-8 decoration-2"
+            >
+              Internship
+            </Link>
 
             {/* Career Page */}
             <Link
@@ -79,19 +84,21 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center gap-4">
-
             {/* Dark Mode Toggle */}
             <ModeToggle />
 
             {/* Mobile Menu Button */}
             <Button
-            
               variant="ghost"
               size="icon"
               className="md:hidden text-muted-foreground hover:text-foreground"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {isMobileMenuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
             </Button>
           </div>
         </div>
@@ -111,7 +118,7 @@ export function Navbar() {
 
               {/* Services Page */}
               <Link
-                href="/services"
+                href="/#services"
                 className="block px-3 py-2 text-base font-semibold text-foreground tracking-wide hover:text-blue-500 hover:underline transition-all duration-300"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -120,7 +127,9 @@ export function Navbar() {
 
               {/* Internship Page */}
               <Link
-                href="/internship"
+                href="https://docs.google.com/forms/d/e/1FAIpQLSd_IXUmj1XFUT8ydvWbqoWJ9ImZffOsc0rHwsMHICO_E5F5dA/viewform"
+              target="_blank"
+              rel="noopener noreferrer"
                 className="block px-3 py-2 text-base font-semibold text-foreground tracking-wide hover:text-blue-500 hover:underline transition-all duration-300"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -138,18 +147,18 @@ export function Navbar() {
 
               {/* Contact Page */}
               <Link
-                href="/contact"
+                href="/business"
                 className="block px-3 py-2 text-base font-semibold text-foreground tracking-wide hover:text-blue-500 hover:underline transition-all duration-300"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Contact
               </Link>
               <Link
-              href="/team"
-              className="relative font-bold text-xl tracking-tight text-muted-foreground transition-all duration-300 hover:text-blue-400 hover:underline underline-offset-8 decoration-2"
-            >
-              Our Team
-            </Link>
+                href="/team"
+                className="block px-3 py-2 text-base font-semibold text-foreground tracking-wide hover:text-blue-500 hover:underline transition-all duration-300"
+              >
+                Our Team
+              </Link>
             </div>
           </div>
         )}

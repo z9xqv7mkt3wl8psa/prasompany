@@ -1,3 +1,4 @@
+"use client";
 const services = [
   {
     title: "Web Development",
@@ -25,19 +26,18 @@ const Services = () => {
       <div className="container mx-auto px-10 text-center">
         {/* Section Title */}
         <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text">
-           Services
+          Services
         </h2>
         <h3 className="text-3xl font-semibold mb-12">
           Transform your business with advanced technologies
-         </h3>
-
+        </h3>
 
         {/* Services Grid */}
         <div className="grid gap-8 lg:grid-cols-3 sm:grid-cols-1 justify-center items-center px-4">
           {services.map((service, index) => (
             <div
               key={index}
-              className="relative group overflow-hidden rounded-lg shadow-lg transition-transform transform hover:scale-105 bg-white h-[450px] mx-4"
+              className="relative group overflow-hidden rounded-lg shadow-lg transition-transform transform hover:scale-105 bg-white"
             >
               {/* Background Image */}
               <div
@@ -50,7 +50,7 @@ const Services = () => {
 
               {/* Title and Description */}
               <div className="relative z-10 flex flex-col justify-end h-full p-6 text-left text-white">
-                <p className="font-stretch-ultra-expanded font-serif text-lg mb-auto leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-100 ease-in-out">
+                <p className="font-stretch-ultra-expanded font-serif text-lg mb-4 leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-100 ease-in-out">
                   {service.description}
                 </p>
                 <h4 className="font-mono text-3xl font-bold mb-4 text-center w-full">
