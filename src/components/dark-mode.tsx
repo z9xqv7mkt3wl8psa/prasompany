@@ -6,22 +6,28 @@ import { Moon, Sun } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 
 export function ModeToggle() {
-  const { theme, setTheme } = useTheme();
-  const isDark = theme === "dark";
+  const { theme, setTheme, systemTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null; // Prevents hydration mismatch
+
+  const currentTheme = theme === "system" ? systemTheme : theme;
+  const isDark = currentTheme === "dark";
 
   return (
     <div className="flex items-center gap-2">
-      {/* Sun Icon */}
       <Sun className={`h-5 w-5 text-yellow-500 transition ${isDark ? "opacity-0" : "opacity-100"}`} />
-
-      {/* Switch Button */}
+      
       <Switch
         checked={isDark}
         onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
         className="relative"
       />
 
-      {/* Moon Icon */}
       <Moon className={`h-5 w-5 text-gray-500 transition ${isDark ? "opacity-100" : "opacity-0"}`} />
     </div>
   );
