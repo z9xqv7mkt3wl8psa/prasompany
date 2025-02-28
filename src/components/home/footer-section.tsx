@@ -122,7 +122,7 @@ export function Footer() {
             <ul className="space-y-3">
               <li className="flex items-center gap-2 text-muted-foreground hover:text-indigo-500 transition-colors">
                 <MapPin className="h-5 w-5" />
-                <span>Mohali, Punjab, India</span>
+                <span>Chandigarh, India</span>
               </li>
               <li className="flex items-center gap-2 text-muted-foreground hover:text-indigo-500 transition-colors">
                 <Mail className="h-5 w-5" />
