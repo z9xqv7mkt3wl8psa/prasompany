@@ -23,11 +23,11 @@ export function Navbar() {
                 height={40}
               />
               <span className="text-2xl font-extrabold tracking-wide">
-                <span className="bg-gradient-to-r from-blue-500 to-indigo-600 bg-clip-text text-transparent">
-                  Prasu
-                </span>
-                <span className="text-foreground">Net</span>
+ <span className="bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 bg-clip-text text-transparent">
+                    PrasuNet
+                  </span>           
               </span>
+              
             </Link>
           </div>
 
