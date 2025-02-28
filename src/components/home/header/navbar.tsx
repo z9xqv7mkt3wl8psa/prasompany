@@ -24,7 +24,7 @@ export function Navbar() {
               />
               <span className="text-2xl font-extrabold tracking-wide">
  <span className="bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 bg-clip-text text-transparent">
-                    PrasuNet
+                    PRASUNET
                   </span>           
               </span>
               
