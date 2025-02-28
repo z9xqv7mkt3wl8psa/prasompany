@@ -53,7 +53,7 @@ const HeroSection = () => {
 
         {/* Right Side: Estd & Learn More (Invisible Box) */}
         <div className="max-w-sm flex flex-col space-y-2 p-4 mb-10">
-          <div className="text-white text-3xl font-bold font-mono">Estd 2021.</div>
+          
           <div className="text-white">
             We are <span className="text-blue-400">Prasunet Team,<br/></span>providing IT services <br/>
             and consulting to<br/>grow your business.
