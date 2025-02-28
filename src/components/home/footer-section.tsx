@@ -128,10 +128,7 @@ export function Footer() {
                 <Mail className="h-5 w-5" />
                 <span className="text-sm">prasunetcompany@gmail.com</span>
               </li>
-              <li className="flex items-center gap-2 text-muted-foreground hover:text-indigo-500 transition-colors">
-                <Phone className="h-5 w-5" />
-                <span>+123 456 7890</span>
-              </li>
+              
             </ul>
 
             {/* Social Media Links */}
