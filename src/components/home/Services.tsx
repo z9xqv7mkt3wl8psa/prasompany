@@ -1,13 +1,13 @@
 "use client";
 const services = [
   {
-    title: "Web Development",
+    title: "Web Solutions",
     image: "/s1.jpg",
     description:
       "From front-end to back-end development, our custom web development services cover it all. Whether it's enhancing an existing app or architecting an enterprise solution, our developers are ready to tackle any challenge.",
   },
   {
-    title: "App Development",
+    title: "App Solutions",
     image: "/s2.jpg",
     description:
       "Expertise in crafting multi-platform mobile app solutions for Android and iOS devices. With technologies like PhoneGap, Xamarin, and React Native, we deliver custom apps that run seamlessly across various platforms.",
