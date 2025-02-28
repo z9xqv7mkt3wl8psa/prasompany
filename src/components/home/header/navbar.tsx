@@ -75,12 +75,7 @@ export function Navbar() {
               Contact
             </Link>
 
-            <Link
-              href="/team"
-              className="relative font-bold text-xl tracking-tight text-muted-foreground transition-all duration-300 hover:text-blue-400 hover:underline underline-offset-8 decoration-2"
-            >
-              Our Team
-            </Link>
+           
           </div>
 
           <div className="flex items-center gap-4">
