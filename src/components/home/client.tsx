@@ -13,7 +13,6 @@ const clients = [
   "/clients/clientimg6.png",
   "/clients/clientimg7.png",
   "/clients/clientimg8.jpg",
-  "/clients/images.jpg",
   "/clients/images1.png",
 ];
 
