@@ -38,6 +38,7 @@ export default function Home() {
 
       <Services />
       <Stats />
+      <NewsSection/>
       <Project />
       <InternshipSection />
       <Testimonials />
