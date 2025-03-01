@@ -25,7 +25,7 @@ const teamMembers = [
    
   },
   {
-    name: "Dharamjeet Yadav",
+    name: "Dharamjeet",
     role: "Chief Marketing Officer",
     image: "/team/dharamjeet.jpg",
     linkedin: "",
