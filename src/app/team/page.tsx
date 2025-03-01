@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import { Linkedin, X } from "lucide-react";
@@ -39,7 +41,7 @@ const Team = () => {
   const isDark = theme === "dark";
 
   return (
-    <section className="relative h-screen flex flex-col items-center justify-center px-4">
+    <section className="relative h-auto flex flex-col items-center justify-center px-4 py-20">
       {/* Background Pattern */}
       <div className="absolute inset-0 -z-10">
         <div
@@ -52,7 +54,7 @@ const Team = () => {
       </div>
 
       {/* Team Content */}
-      <div className="relative z-10 max-w-4xl text-center">
+      <div className="relative z-10 max-w-6xl text-center">
         <h2 className={`text-4xl font-extrabold ${isDark ? "text-white" : "text-gray-900"}`}>
           Meet Our Team
         </h2>
@@ -60,7 +62,7 @@ const Team = () => {
           A passionate team dedicated to bringing your ideas to life.
         </p>
 
-        <div className="mt-12 grid md:grid-cols-3 gap-10 px-6">
+        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 px-6">
           {teamMembers.map((member, index) => (
             <div
               key={index}
@@ -80,26 +82,30 @@ const Team = () => {
 
               {/* Social Icons */}
               <div className="flex justify-center gap-4 mt-4">
-                <a
-                  href={member.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`transition ${
-                    isDark ? "text-blue-400 hover:text-blue-600" : "text-blue-600 hover:text-blue-800"
-                  }`}
-                >
-                  <Linkedin size={24} />
-                </a>
-                <a
-                  href={member.twitter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`transition ${
-                    isDark ? "text-gray-400 hover:text-gray-200" : "text-blue-400 hover:text-blue-600"
-                  }`}
-                >
-                  <X size={24} />
-                </a>
+                {member.linkedin && (
+                  <a
+                    href={member.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`transition ${
+                      isDark ? "text-blue-400 hover:text-blue-600" : "text-blue-600 hover:text-blue-800"
+                    }`}
+                  >
+                    <Linkedin size={24} />
+                  </a>
+                )}
+                {member.twitter && (
+                  <a
+                    href={member.twitter}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`transition ${
+                      isDark ? "text-gray-400 hover:text-gray-200" : "text-blue-400 hover:text-blue-600"
+                    }`}
+                  >
+                    <X size={24} />
+                  </a>
+                )}
               </div>
             </div>
           ))}
