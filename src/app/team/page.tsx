@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import Image from "next/image";
 import { Linkedin, X } from "lucide-react";
@@ -10,22 +8,25 @@ const teamMembers = [
     name: "Pramod Prajapat",
     role: "Founder & CEO",
     image: "/team/pramod.jpg",
-    
+    linkedin: "https://www.linkedin.com/in/pramod-prajapat-833bb52a1",
+    twitter: "https://x.com/pramodprajpat",
   },
   {
     name: "Aryan Sharma",
     role: "Co-Founder & Android Developer",
     image: "/team/aryan.jpg",
-    
+    linkedin: "https://www.linkedin.com/in/aryansharma121",
+    twitter: "https://x.com/AryanSh07q",
   },
   {
     name: "Abhishek Raj",
     role: "CTO & Lead Developer",
     image: "/team/abhishek.jpg",
-   
+    linkedin: "https://www.linkedin.com/in/abhishek-raj-28b253258/",
+    twitter: "https://x.com/AbhishekRa8597",
   },
   {
-    name: "Dharamjeet",
+    name: "Dharamjeet Yadav",
     role: "Chief Marketing Officer",
     image: "/team/dharamjeet.jpg",
     linkedin: "",
@@ -51,7 +52,7 @@ const Team = () => {
       </div>
 
       {/* Team Content */}
-      <div className="relative z-10 max-w-6xl text-center">
+      <div className="relative z-10 max-w-4xl text-center">
         <h2 className={`text-4xl font-extrabold ${isDark ? "text-white" : "text-gray-900"}`}>
           Meet Our Team
         </h2>
@@ -59,7 +60,7 @@ const Team = () => {
           A passionate team dedicated to bringing your ideas to life.
         </p>
 
-        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 px-6">
+        <div className="mt-12 grid md:grid-cols-3 gap-10 px-6">
           {teamMembers.map((member, index) => (
             <div
               key={index}
@@ -79,30 +80,26 @@ const Team = () => {
 
               {/* Social Icons */}
               <div className="flex justify-center gap-4 mt-4">
-                {member.linkedin && (
-                  <a
-                    href={member.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`transition ${
-                      isDark ? "text-blue-400 hover:text-blue-600" : "text-blue-600 hover:text-blue-800"
-                    }`}
-                  >
-                    <Linkedin size={24} />
-                  </a>
-                )}
-                {member.twitter && (
-                  <a
-                    href={member.twitter}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`transition ${
-                      isDark ? "text-gray-400 hover:text-gray-200" : "text-blue-400 hover:text-blue-600"
-                    }`}
-                  >
-                    <X size={24} />
-                  </a>
-                )}
+                <a
+                  href={member.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`transition ${
+                    isDark ? "text-blue-400 hover:text-blue-600" : "text-blue-600 hover:text-blue-800"
+                  }`}
+                >
+                  <Linkedin size={24} />
+                </a>
+                <a
+                  href={member.twitter}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`transition ${
+                    isDark ? "text-gray-400 hover:text-gray-200" : "text-blue-400 hover:text-blue-600"
+                  }`}
+                >
+                  <X size={24} />
+                </a>
               </div>
             </div>
           ))}
