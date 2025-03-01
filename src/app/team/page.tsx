@@ -30,7 +30,7 @@ const teamMembers = [
   {
     name: "Dharamjeet Yadav",
     role: "Chief Marketing Officer",
-    image: "/team/dharmjeet.jpg",
+    image: "/team/dharamjeet.jpg",
     linkedin: "",
     twitter: "",
   },
