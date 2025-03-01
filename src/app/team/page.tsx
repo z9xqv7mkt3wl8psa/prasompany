@@ -27,6 +27,13 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/abhishek-raj-28b253258/",
     twitter: "https://x.com/AbhishekRa8597",
   },
+  {
+    name: "Dharamjeet Yadav",
+    role: "Chief Marketing Officer",
+    image: "/team/dharmjeet.jpg",
+    linkedin: "",
+    twitter: "",
+  },
 ];
 
 const Team = () => {
