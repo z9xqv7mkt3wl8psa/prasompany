@@ -5,7 +5,7 @@ import Footer from "@/components/home/footer-section";
 import Navbar from "@/components/home/header/navbar";
 import HeroSection from "@/components/home/hero-section";
 import InternshipSection from "@/components/home/Intern";
-
+import NewsSection from "@/components/home/NewsSection";
 import Project from "@/components/home/project";
 import RegisterSection from "@/components/home/register";
 import Services from "@/components/home/Services";
@@ -43,7 +43,7 @@ export default function Home() {
       <Project />
       <InternshipSection />
       <Testimonials />
-     
+     <NewsSection />
       <CareerSection />
       <ClientSection />
       <RegisterSection />
