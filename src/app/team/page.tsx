@@ -60,13 +60,13 @@ const Team = () => {
               className={`rounded-lg shadow-lg p-6 text-center transition-transform transform hover:-translate-y-2 
                 ${isDark ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}
             >
-              <div className="relative w-32 h-32 mx-auto">
+              <div className="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-gray-200 dark:border-gray-700">
                 <Image
                   src={member.image}
                   alt={member.name}
                   width={128}
                   height={128}
-                  className="rounded-full object-cover border-4 border-gray-200 dark:border-gray-700"
+                  className="object-cover w-full h-full"
                 />
               </div>
               <h3 className="text-2xl font-bold mt-4">{member.name}</h3>
