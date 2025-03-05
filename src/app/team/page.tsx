@@ -2,7 +2,6 @@
 
 import React from "react";
 import Image from "next/image";
-import { Linkedin, X } from "lucide-react";
 import { useTheme } from "next-themes";
 
 const teamMembers = [
@@ -10,25 +9,21 @@ const teamMembers = [
     name: "Pramod Prajapat",
     role: "Founder & CEO",
     image: "/team/pramod.jpg",
-    
   },
   {
     name: "Aryan Sharma",
     role: "Co-Founder & Android Developer",
     image: "/team/aryan.jpg",
-    
   },
   {
     name: "Abhishek Raj",
     role: "CTO & Lead Developer",
     image: "/team/abhishek.jpg",
-    
   },
   {
     name: "Dharamjeet Yadav",
     role: "Chief Marketing Officer",
     image: "/team/dharamjeet.jpg",
-    
   },
 ];
 
@@ -69,40 +64,13 @@ const Team = () => {
                 <Image
                   src={member.image}
                   alt={member.name}
-                  fill
+                  width={128}
+                  height={128}
                   className="rounded-full object-cover border-4 border-gray-200 dark:border-gray-700"
                 />
               </div>
               <h3 className="text-2xl font-bold mt-4">{member.name}</h3>
               <p className={`${isDark ? "text-gray-400" : "text-gray-600"}`}>{member.role}</p>
-
-              {/* Social Icons */}
-              <div className="flex justify-center gap-4 mt-4">
-                {member.linkedin && (
-                  <a
-                    href={member.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`transition ${
-                      isDark ? "text-blue-400 hover:text-blue-600" : "text-blue-600 hover:text-blue-800"
-                    }`}
-                  >
-                    <Linkedin size={24} />
-                  </a>
-                )}
-                {member.twitter && (
-                  <a
-                    href={member.twitter}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`transition ${
-                      isDark ? "text-gray-400 hover:text-gray-200" : "text-blue-400 hover:text-blue-600"
-                    }`}
-                  >
-                    <X size={24} />
-                  </a>
-                )}
-              </div>
             </div>
           ))}
         </div>
