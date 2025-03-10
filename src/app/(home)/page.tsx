@@ -5,7 +5,7 @@ import Footer from "@/components/home/footer-section";
 import Navbar from "@/components/home/header/navbar";
 import HeroSection from "@/components/home/hero-section";
 import InternshipSection from "@/components/home/Intern";
-
+import FAQ from "@/components/home/faq";
 import Project from "@/components/home/project";
 import RegisterSection from "@/components/home/register";
 import Services from "@/components/home/Services";
@@ -47,6 +47,7 @@ export default function Home() {
       <CareerSection />
       <ClientSection />
       <RegisterSection />
+      <FAQ />
       <ContactForm />
       <Footer />
     </div>
