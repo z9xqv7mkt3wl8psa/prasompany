@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Mail, MapPin, Phone, Linkedin, Twitter, Facebook, Instagram } from "lucide-react";
+import { Mail, MapPin, Linkedin, Twitter, Facebook, Instagram } from "lucide-react";
 import Image from "next/image";
 
 export function Footer() {
@@ -128,10 +128,7 @@ export function Footer() {
                 <Mail className="h-5 w-5" />
                 <span className="text-sm">prasunetcompany@gmail.com</span>
               </li>
-               <li className="flex items-center gap-2 text-muted-foreground hover:text-indigo-500 transition-colors">
-                <Phone className="h-5 w-5" />
-                <span>+91 7347654757</span>
-              </li>
+               
             </ul>
 
             {/* Social Media Links */}
