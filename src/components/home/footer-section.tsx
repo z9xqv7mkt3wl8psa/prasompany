@@ -58,7 +58,7 @@ export function Footer() {
               </div>
             </div>
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-foreground text-center">Stay Update</h3>
+              
               <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <div className="relative">
                   <Input 
