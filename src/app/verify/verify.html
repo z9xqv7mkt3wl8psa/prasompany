@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Certificate Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        h1 {
+            color: #4CAF50;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .success {
+            background-color: #e7f6e7;
+            color: #2d7a2d;
+            border: 1px solid #a3d9a3;
+        }
+        .error {
+            background-color: #fdecea;
+            color: #c72c2c;
+            border: 1px solid #f5c6c6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Certificate Verification</h1>
+    <div id="result" class="status">Verifying...</div>
+</div>
+
+<script>
+    async function verifyCertificate() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        if (!token) {
+            document.getElementById('result').innerHTML = '❌ No token provided';
+            document.getElementById('result').classList.add('error');
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:5000/verify?token=${token}`);
+            const data = await response.json();
+
+            if (response.ok) {
+                document.getElementById('result').innerHTML = `
+                    ✅ Verified!<br>
+                    <strong>UserId:</strong> ${data.userId} <br>
+                    <strong>Internship Domain:</strong> ${data.certificateType} <br>
+                    <strong>Issued At:</strong> ${new Date(data.issuedAt).toLocaleDateString()} <br>
+                    <strong>Expiry Date:</strong> ${new Date(data.expiryDate).toLocaleDateString()}
+                `;
+                document.getElementById('result').classList.add('success');
+            } else {
+                document.getElementById('result').innerHTML = `❌ ${data.message}`;
+                document.getElementById('result').classList.add('error');
+            }
+        } catch (error) {
+            console.error('Verification error:', error);
+            document.getElementById('result').innerHTML = '❌ Error verifying certificate';
+            document.getElementById('result').classList.add('error');
+        }
+    }
+
+    // Call function on load
+    window.onload = verifyCertificate;
+</script>
+
+</body>
+</html>
