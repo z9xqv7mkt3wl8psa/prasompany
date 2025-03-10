@@ -116,6 +116,7 @@ export default function LearnMorePage() {
         </div>
       </section>
 
+      
       {/* Contact Us */}
       <section className="py-16 px-6 text-center">
         <h2 className="text-4xl font-bold text-gray-800">Get in Touch</h2>
