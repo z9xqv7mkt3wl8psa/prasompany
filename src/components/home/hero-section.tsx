@@ -59,7 +59,7 @@ const HeroSection = () => {
             and consulting to<br/>grow your business.
           </div>
           <Link
-            href="/Learnmore"
+             href="/Learnmore"
             className="text-blue-400 font-semibold hover:underline"
           >
             Learn more →
