@@ -28,8 +28,6 @@ const faqData = [
     answer:
       "Our cybersecurity services include network security, data encryption, risk assessment, and vulnerability management to protect businesses.",
   },
-  
- 
 ];
 
 const Faq = () => {
@@ -40,7 +38,7 @@ const Faq = () => {
   };
 
   return (
-    <div className="bg-white py-16 flex justify-center">
+    <div className="bg-white py-16 flex justify-center px-4 md:px-0">
       <div className="max-w-4xl w-full p-8 rounded-xl shadow-2xl bg-gradient-to-b from-[#cbe6ff] to-[#e0f2ff]">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
           Frequently Asked Questions
@@ -53,9 +51,7 @@ const Faq = () => {
               onClick={() => toggleFAQ(index)}
             >
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-medium text-gray-600">
-                  {faq.question}
-                </h3>
+                <h3 className="text-lg font-medium text-gray-600">{faq.question}</h3>
                 <span
                   className={`text-xl font-bold transition-transform duration-300 ${
                     openIndex === index ? "rotate-180" : "rotate-0"
@@ -65,11 +61,11 @@ const Faq = () => {
                 </span>
               </div>
               <div
-                className={`overflow-hidden transition-max-height duration-500 ${
-                  openIndex === index ? "max-h-40 mt-2" : "max-h-0"
+                className={`transition-all duration-500 overflow-hidden ${
+                  openIndex === index ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0"
                 }`}
               >
-                <p className="text-gray-500 mt-2">{faq.answer}</p>
+                <p className="text-gray-500 mt-2 leading-relaxed">{faq.answer}</p>
               </div>
             </div>
           ))}
