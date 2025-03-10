@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 
 import * as React from "react";
 import { useTheme } from "next-themes";
@@ -31,4 +31,4 @@ export function ModeToggle() {
       <Moon className={`h-5 w-5 text-gray-500 transition ${isDark ? "opacity-100" : "opacity-0"}`} />
     </div>
   );
-}
+} */
