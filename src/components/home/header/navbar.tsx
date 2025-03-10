@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import { ModeToggle } from "../../dark-mode";
+
 import Link from "next/link";
 import Image from "next/image";
 
@@ -78,25 +78,7 @@ export function Navbar() {
            
           </div>
 
-          <div className="flex items-center gap-4">
-            {/* Dark Mode Toggle */}
-            <ModeToggle />
-
-            {/* Mobile Menu Button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden text-muted-foreground hover:text-foreground"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
-            </Button>
-          </div>
-        </div>
+         
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
