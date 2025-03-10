@@ -4,9 +4,9 @@ import React, { useState } from "react";
 
 const faqData = [
   {
-    question: "What services does Prasunet Pvt. Ltd. offer?",
+    question: "Who is Prasunet Pvt. Ltd. company?",
     answer:
-      "Prasunet provides software development, IT consulting, cybersecurity, cloud services, AI & ML solutions, web development, and more.",
+      "Prasunet Pvt. Ltd. is a global technology company specializing in software development, IT consulting, and digital transformation solutions. With expertise in AI, cloud computing, cybersecurity, and enterprise solutions, Prasunet empowers businesses with cutting-edge technology. Headquartered in India, the company serves clients worldwide, delivering innovative and scalable IT services tailored to modern business needs.",
   },
   {
     question: "How can Prasunet help businesses with digital transformation?",
