@@ -1,18 +1,19 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
+import type { Configuration } from 'webpack';
 
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "**", // Allows all external images (less secure)
+        protocol: 'https',
+        hostname: '**', // Allows all external images (less secure)
       },
     ],
   },
-  webpack(config) {
+  webpack(config: Configuration) {
     // Remove any custom JSON loader if exists
-    const existingRules = config.module.rules;
-    config.module.rules = existingRules.filter(rule => rule.loader !== 'json-loader');
+    const existingRules = config.module?.rules as any[]; // Explicitly type it as an array
+    config.module!.rules = existingRules.filter((rule: any) => rule.loader !== 'json-loader');
     
     return config;
   },
