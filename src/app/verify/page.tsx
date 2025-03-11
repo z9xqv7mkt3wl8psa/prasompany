@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
 export default function VerifyCertificate() {
@@ -31,7 +31,6 @@ export default function VerifyCertificate() {
           setResult(`❌ ${data.message}`);
         }
       } catch {
-        // Don't use error here
         setResult('❌ Error verifying certificate');
       }
     };
@@ -44,5 +43,14 @@ export default function VerifyCertificate() {
       <h1 className="text-2xl font-bold">Certificate Verification</h1>
       <p className="mt-3 text-lg">{result}</p>
     </div>
+  );
+}
+
+// Wrap the VerifyCertificate component inside Suspense
+export function SuspendedVerifyCertificate() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <VerifyCertificate />
+    </Suspense>
   );
 }
