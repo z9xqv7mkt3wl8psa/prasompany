@@ -4,7 +4,8 @@ import jwt from 'jsonwebtoken';
 
 // Initialize Firebase Admin (Only once)
 if (!admin.apps.length) {
-  const serviceAccount = require('@/certificate/firebase-service-key.json');
+  const serviceAccount = require('../../../certificate/firebase-service-key.json');
+
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
   });
