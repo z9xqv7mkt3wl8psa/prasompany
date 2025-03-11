@@ -2,11 +2,13 @@ import { NextResponse } from 'next/server';
 import admin from 'firebase-admin';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import serviceAccount from '../../../certificate/firebase-service-key.json'; // Static import
+import { ServiceAccount } from 'firebase-admin';
 
 // Initialize Firebase Admin (Only once)
 if (!admin.apps.length) {
+  // Explicitly cast serviceAccount as ServiceAccount type
   admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
+    credential: admin.credential.cert(serviceAccount as ServiceAccount) // Type assertion
   });
 }
 
