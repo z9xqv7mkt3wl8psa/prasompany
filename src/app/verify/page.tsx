@@ -30,7 +30,8 @@ export default function VerifyCertificate() {
         } else {
           setResult(`❌ ${data.message}`);
         }
-      } catch (error) {
+      } catch {
+        // Don't use error here
         setResult('❌ Error verifying certificate');
       }
     };
