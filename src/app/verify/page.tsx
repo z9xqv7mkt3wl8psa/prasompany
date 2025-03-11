@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
-export default function VerifyCertificate() {
+function CertificateVerificationContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const [result, setResult] = useState("Verifying...");
@@ -31,18 +31,23 @@ export default function VerifyCertificate() {
           setResult(`❌ ${data.message}`);
         }
       } catch {
-        setResult('❌ Error verifying certificate');
+        setResult("❌ Error verifying certificate");
       }
     };
 
     verifyCertificate();
   }, [token]);
 
+  return <p className="mt-3 text-lg">{result}</p>;
+}
+
+export default function VerifyCertificate() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
       <h1 className="text-2xl font-bold">Certificate Verification</h1>
+      {/* Wrap it with Suspense */}
       <Suspense fallback={<div>Loading...</div>}>
-        <p className="mt-3 text-lg">{result}</p>
+        <CertificateVerificationContent />
       </Suspense>
     </div>
   );
