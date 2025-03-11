@@ -1,61 +1,34 @@
 import { NextResponse } from 'next/server';
-import admin from 'firebase-admin';
-import jwt, { JwtPayload } from 'jsonwebtoken';
-import serviceAccount from '../../../certificate/firebase-service-key.json'; // Static import
-import { ServiceAccount } from 'firebase-admin';
+import { PrismaClient } from "@prisma/client";
 
-// Initialize Firebase Admin (Only once)
-if (!admin.apps.length) {
-  // Explicitly cast serviceAccount as ServiceAccount type
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount as ServiceAccount) // Type assertion
-  });
-}
-
-const db = admin.firestore();
-
-const SECRET_KEY = process.env.SECRET_KEY || 'your-very-secure-key';
+const prisma = new PrismaClient();
 
 export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const token = searchParams.get('token');
+    try {
+        const { searchParams } = new URL(req.url);
+        const certId = searchParams.get('certId');
 
-  if (!token) {
-    return NextResponse.json({ message: 'Token is required' }, { status: 400 });
-  }
+        if (!certId || certId.length !== 10) {
+            return NextResponse.json({ error: 'Invalid Certificate ID' }, { status: 400 });
+        }
 
-  try {
-    // Verifying the token
-    const decoded = jwt.verify(token, SECRET_KEY) as JwtPayload;  // Type assertion to JwtPayload
+        // Find certificate in the database
+        const certificate = await prisma.certificate.findUnique({
+            where: { id: certId }, // Ensure your database has an 'id' field with a 10-digit value
+        });
 
-    // Ensure 'userId' is in the decoded token
-    if (!decoded.userId) {
-      return NextResponse.json({ message: 'Invalid token: userId missing' }, { status: 401 });
+        if (!certificate) {
+            return NextResponse.json({ error: 'Certificate not found' }, { status: 404 });
+        }
+
+        return NextResponse.json({
+            message: 'Certificate is valid',
+            recipient: certificate.recipient,
+            course: certificate.course,
+            issuedDate: certificate.issuedDate,
+        });
+    } catch (error) {
+        console.error('Error verifying certificate:', error);
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
-
-    // Fetch the certificate from Firebase Firestore using userId
-    const doc = await db.collection('certificates').doc(decoded.userId).get();
-
-    if (!doc.exists) {
-      return NextResponse.json({ message: 'Certificate not found' }, { status: 404 });
-    }
-
-    const certificate = doc.data();
-
-    if (certificate?.token !== token) {
-      return NextResponse.json({ message: 'Invalid certificate' }, { status: 401 });
-    }
-
-    // Return the certificate details if everything is valid
-    return NextResponse.json({
-      status: 'Verified ✅',
-      userId: decoded.userId,
-      certificateType: certificate.certificateType,
-      issuedAt: certificate.issuedAt,
-      expiryDate: certificate.expiryDate
-    });
-  } catch (error) {
-    console.error('Verification error:', error);
-    return NextResponse.json({ message: 'Invalid or expired token' }, { status: 401 });
-  }
 }
