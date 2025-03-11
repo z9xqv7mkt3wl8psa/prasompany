@@ -31,11 +31,12 @@ const faqData = [
 ];
 
 const Faq = () => {
-  const [openIndex, setOpenIndex] = useState(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const toggleFAQ = (index) => {
+const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
-  };
+};
+
 
   return (
     <div className="bg-white py-16 flex justify-center px-4 md:px-0">

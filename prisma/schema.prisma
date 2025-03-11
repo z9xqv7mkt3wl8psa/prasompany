@@ -53,3 +53,11 @@ model Subscriber {
   email String @unique
   createdAt DateTime @default(now())
 }
+model Certificate {
+  id          String  @id @unique @default(uuid()) // Change to 10-digit ID manually
+  recipient   String
+  course      String
+  issuedDate  DateTime @default(now())
+}
+
+

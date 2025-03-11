@@ -78,16 +78,13 @@ const services = [
 
 const Services = () => {
   return (
-    <section id="services" className="py-20 bg-gray-100">
+    <section id="services" className="py-20 bg-gray-900 text-white">
       <div className="container mx-auto px-10 text-center">
-        <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-pink-500 text-transparent bg-clip-text">
-          Services
-        </h2>
-        <h3 className="text-3xl font-semibold mb-12">
+        <h2 className="text-4xl font-bold mb-6">Services</h2>
+        <h3 className="text-2xl font-semibold mb-12">
           Transform your business with advanced technologies
         </h3>
 
-        {/* Responsive Grid Layout */}
         <div className="grid gap-8 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1">
           {services.map((service, index) => (
             <motion.div
@@ -96,27 +93,23 @@ const Services = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="relative group overflow-hidden rounded-lg shadow-lg transition-transform transform hover:scale-105 bg-white min-h-[400px] flex flex-col"
+              className="relative group overflow-hidden rounded-lg shadow-lg transition-transform transform hover:scale-105 bg-gray-800"
             >
-              {/* Background Image */}
               <div
-                className="shadow-xl absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110 rounded-lg"
+                className="shadow-xl absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110"
                 style={{ backgroundImage: `url(${service.image})` }}
               ></div>
-
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-black opacity-50 transition-opacity duration-300 ease-in-out rounded-lg"></div>
-
-              {/* Content Section */}
+              <div className="absolute inset-0 bg-black opacity-50 transition-opacity duration-300 ease-in-out"></div>
               <div className="relative z-10 flex flex-col justify-end h-full p-6 text-left text-white">
-                <h4 className="text-xl font-bold text-white mb-4 text-center">
-                  {service.title}
-                </h4>
-                <p className="text-sm opacity-90">{service.description}</p>
+                <h4 className="text-lg font-bold mb-2">{service.title}</h4>
               </div>
             </motion.div>
           ))}
         </div>
+
+        <button className="mt-10 px-6 py-3 text-lg font-semibold bg-white text-gray-900 rounded-full shadow-lg hover:bg-gray-300 transition">
+          View all topics ↓
+        </button>
       </div>
     </section>
   );
