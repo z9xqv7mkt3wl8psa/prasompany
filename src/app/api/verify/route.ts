@@ -1,12 +1,10 @@
 import { NextResponse } from 'next/server';
 import admin from 'firebase-admin';
 import jwt from 'jsonwebtoken';
+import serviceAccount from '../../../certificate/firebase-service-key.json'; // Static import
 
 // Initialize Firebase Admin (Only once)
 if (!admin.apps.length) {
-  import serviceAccount from '../../../certificate/firebase-service-key.json';
-
-
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
   });
