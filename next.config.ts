@@ -10,12 +10,10 @@ const nextConfig: NextConfig = {
     ],
   },
   webpack(config) {
-    // This rule allows you to import JSON files
-    config.module.rules.push({
-      test: /\.json$/,
-      loader: 'json-loader',
-      type: 'javascript/auto', // Make sure JSON is treated as JavaScript module
-    });
+    // Remove any custom JSON loader if exists
+    const existingRules = config.module.rules;
+    config.module.rules = existingRules.filter(rule => rule.loader !== 'json-loader');
+    
     return config;
   },
 };
