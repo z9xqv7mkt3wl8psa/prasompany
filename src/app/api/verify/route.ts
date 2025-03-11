@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
 import admin from 'firebase-admin';
-import jwt from 'jsonwebtoken';
-import * as serviceAccount from '../../../certificate/firebase-service-key.json'; // Importing as a module
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import serviceAccount from '../../../certificate/firebase-service-key.json'; // Static import
 
 // Initialize Firebase Admin (Only once)
 if (!admin.apps.length) {
   admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount as admin.ServiceAccount) // Explicit cast to ServiceAccount type
+    credential: admin.credential.cert(serviceAccount)
   });
 }
 
@@ -23,7 +23,15 @@ export async function GET(req: Request) {
   }
 
   try {
-    const decoded = jwt.verify(token, SECRET_KEY);
+    // Verifying the token
+    const decoded = jwt.verify(token, SECRET_KEY) as JwtPayload;  // Type assertion to JwtPayload
+
+    // Ensure 'userId' is in the decoded token
+    if (!decoded.userId) {
+      return NextResponse.json({ message: 'Invalid token: userId missing' }, { status: 401 });
+    }
+
+    // Fetch the certificate from Firebase Firestore using userId
     const doc = await db.collection('certificates').doc(decoded.userId).get();
 
     if (!doc.exists) {
@@ -32,10 +40,11 @@ export async function GET(req: Request) {
 
     const certificate = doc.data();
 
-    if (certificate.token !== token) {
+    if (certificate?.token !== token) {
       return NextResponse.json({ message: 'Invalid certificate' }, { status: 401 });
     }
 
+    // Return the certificate details if everything is valid
     return NextResponse.json({
       status: 'Verified ✅',
       userId: decoded.userId,
