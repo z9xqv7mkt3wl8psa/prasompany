@@ -39,18 +39,11 @@ export default function VerifyCertificate() {
   }, [token]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-      <h1 className="text-2xl font-bold">Certificate Verification</h1>
-      <p className="mt-3 text-lg">{result}</p>
-    </div>
-  );
-}
-
-// Wrap the VerifyCertificate component inside Suspense
-export function SuspendedVerifyCertificate() {
-  return (
     <Suspense fallback={<div>Loading...</div>}>
-      <VerifyCertificate />
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+        <h1 className="text-2xl font-bold">Certificate Verification</h1>
+        <p className="mt-3 text-lg">{result}</p>
+      </div>
     </Suspense>
   );
 }
