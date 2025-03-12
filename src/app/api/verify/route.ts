@@ -42,12 +42,14 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'Certificate not found' }, { status: 404 });
     }
 
-    return NextResponse.json({
-      message: 'Certificate is valid',
-      recipient: certificate.recipient,
-      course: certificate.course,
-      issuedDate: certificate.issuedDate,
-    });
+   return NextResponse.json({
+  message: 'Certificate is valid',
+  userId: certificate.id, // Use `id` instead of `recipient`
+  certificateType: certificate.certificateType, // Use `certificateType` instead of `course`
+  issuedAt: certificate.issuedAt, // Use `issuedAt` instead of `issuedDate`
+  expiryDate: certificate.expiryDate
+});
+
   } catch (error) {
     console.error('Error verifying certificate:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
