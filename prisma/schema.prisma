@@ -54,7 +54,7 @@ model Subscriber {
   createdAt DateTime @default(now())
 }
 model Certificate {
-  id          String @id @default(uuid())
+  id          String @id
   recipient   String
   course      String
   issuedDate  DateTime
