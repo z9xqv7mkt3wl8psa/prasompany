@@ -4,7 +4,11 @@ import jwt from 'jsonwebtoken';
 
 const prisma = new PrismaClient();
 
-const SECRET_KEY = 'your-secret-key'; // Keep it secure
+const SECRET_KEY = process.env.SECRET_KEY as string; // Load from environment variables
+
+if (!SECRET_KEY) {
+    throw new Error('SECRET_KEY is not defined in the environment variables.');
+}
 
 export async function GET(req: Request) {
     try {
@@ -24,7 +28,8 @@ export async function GET(req: Request) {
                 iat: number;
                 exp: number;
             };
-        } catch (error) {
+        } catch (_error) {
+            console.error('JWT verification failed:', _error);
             return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 });
         }
 
