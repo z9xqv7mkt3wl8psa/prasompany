@@ -33,18 +33,22 @@ function CertificateVerification() {
 
         async function fetchCertificate() {
             try {
-                const res = await fetch(`/api/verify?token=${token}`);
+                console.log(`Fetching certificate with token: ${token}`);
+
+                // Ensure the URL is consistent with the API route
+                const res = await fetch(`/verify?token=${token}`); 
+
+                if (!res.ok) {
+                    const errorData = await res.json();
+                    throw new Error(errorData.error || 'Failed to fetch certificate details.');
+                }
 
                 const data = await res.json();
 
-                if (!res.ok) {
-                    setError(data.error || 'Failed to fetch certificate details.');
-                } else {
-                    setCertificate(data);
-                }
+                setCertificate(data);
             } catch (error) {
                 console.error('Error fetching certificate:', error);
-                setError('Failed to fetch certificate details.');
+                setError((error as Error).message);
             } finally {
                 setLoading(false);
             }
@@ -66,7 +70,7 @@ function CertificateVerification() {
     }
 
     return (
-        <div className="p-6 text-center border border-gray-300 rounded-md shadow-md">
+        <div className="p-6 text-center border border-gray-300 rounded-md shadow-md max-w-md mx-auto">
             <h1 className="text-2xl font-bold text-blue-700">Certificate Verification</h1>
             <p className="text-green-600 mt-2">✅ Certificate is valid</p>
             <div className="mt-4 space-y-2">
