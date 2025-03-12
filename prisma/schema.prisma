@@ -55,7 +55,7 @@ model Subscriber {
 }
 model Certificate {
   id               String  @id // Primary key to match userId
-  certificateType  String
+  certificateType  String  @unique
   expiryDate       String
   issuedAt         String
   token            String
