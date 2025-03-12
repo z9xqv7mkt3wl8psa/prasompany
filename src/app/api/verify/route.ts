@@ -24,7 +24,7 @@ export async function GET(req: Request) {
     let decoded;
     try {
       decoded = jwt.verify(token, SECRET_KEY) as {
-        userId: string; // Fixed to userId
+        userId: string;
         certificateType: string;
         iat: number;
         exp: number;
@@ -34,28 +34,28 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 });
     }
 
-    console.log("Decoded token:", decoded); // Log decoded token data
+    console.log("Decoded token:", decoded);
 
-const certificate = await prisma.certificate.findUnique({
-  where: {
-    token: decoded.token
-  }
-});
+    // Use token directly instead of decoded.token
+    const certificate = await prisma.certificate.findUnique({
+      where: {
+        token: token
+      }
+    });
 
-console.log("Fetched certificate:", certificate); // Log fetched certificate
+    console.log("Fetched certificate:", certificate);
 
-if (!certificate) {
-  return NextResponse.json({ message: "Certificate not found" }, { status: 404 });
-}
+    if (!certificate) {
+      return NextResponse.json({ message: "Certificate not found" }, { status: 404 });
+    }
 
-return NextResponse.json({
-  message: 'Certificate is valid',
-  userId: certificate.id,
-  certificateType: certificate.certificateType,
-  issuedAt: certificate.issuedAt,
-  expiryDate: certificate.expiryDate
-});
-
+    return NextResponse.json({
+      message: 'Certificate is valid',
+      userId: certificate.id,
+      certificateType: certificate.certificateType,
+      issuedAt: certificate.issuedAt,
+      expiryDate: certificate.expiryDate
+    });
 
   } catch (error) {
     console.error('Error verifying certificate:', error);
