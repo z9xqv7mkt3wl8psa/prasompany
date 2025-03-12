@@ -54,10 +54,12 @@ model Subscriber {
   createdAt DateTime @default(now())
 }
 model Certificate {
-  id          String  @id @unique @default(uuid()) // Change to 10-digit ID manually
+  id          String  @id @unique @default(uuid()) // Change to 10-digit ID manually if needed
+  userId      String  // Added userId field
   recipient   String
   course      String
   issuedDate  DateTime @default(now())
 }
+
 
 
