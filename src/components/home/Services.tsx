@@ -1,92 +1,34 @@
 "use client";
+import { useState } from "react";
 import { motion } from "framer-motion";
 
 const services = [
-  {
-    title: "Software Development",
-    image: "/ssoftware.jpeg",
-    description:
-      "Custom software development, web and mobile application development, enterprise solutions, and SaaS platforms.",
-  },
-  {
-    title: "IT Consulting & Strategy",
-    image: "/sITconsulting.jpeg",
-    description:
-      "Expert consulting for IT infrastructure, digital transformation, automation, and project management.",
-  },
-  {
-    title: "Web Development & Design",
-    image: "/swebDesign.jpeg",
-    description:
-      "Comprehensive website development, UI/UX design, e-commerce solutions, and CMS platforms like WordPress and Shopify.",
-  },
-  {
-    title: "Cloud Services",
-    image: "/scloudservices.jpeg",
-    description:
-      "Cloud migration, computing solutions on AWS, Azure, and Google Cloud, along with storage and backup solutions.",
-  },
-  {
-    title: "Cybersecurity Services",
-    image: "/scybersecurity.jpeg",
-    description:
-      "Protect your business with network security, data encryption, vulnerability assessments, and risk management.",
-  },
-  {
-    title: "IT Support & Maintenance",
-    image: "/sitsupport.jpeg",
-    description:
-      "Reliable IT support, including help desk services, remote troubleshooting, server maintenance, and hardware support.",
-  },
-  {
-    title: "Data Services",
-    image: "/sdataservices.jpeg",
-    description:
-      "Database management, data analytics, migration, and big data solutions for intelligent decision-making.",
-  },
-  {
-    title: "Networking & Infrastructure",
-    image: "/snetwork.jpeg",
-    description:
-      "Efficient network setup and management, VPN configurations, VoIP services, and wireless networking.",
-  },
-  {
-    title: "AI & Machine Learning",
-    image: "/sai.jpeg",
-    description:
-      "Harness AI for automation, chatbot development, and machine learning models tailored to your business needs.",
-  },
-  {
-    title: "Internet of Things (IoT)",
-    image: "/siot.jpeg",
-    description:
-      "Smart device integration, IoT analytics, and industrial IoT solutions to drive innovation.",
-  },
-  {
-    title: "ERP & CRM Solutions",
-    image: "/serp.jpeg",
-    description:
-      "Optimize business processes with Enterprise Resource Planning (ERP) and Customer Relationship Management (CRM) solutions.",
-  },
-  {
-    title: "Blockchain & Web3 Solutions",
-    image: "/sblockchain.jpeg",
-    description:
-      "Leading-edge blockchain development, smart contracts, NFT platforms, and cryptocurrency solutions.",
-  },
+  { title: "Software Development", image: "/ssoftware.jpeg", description: "Custom software development, web and mobile application development, enterprise solutions, and SaaS platforms." },
+  { title: "IT Consulting & Strategy", image: "/sITconsulting.jpeg", description: "Expert consulting for IT infrastructure, digital transformation, automation, and project management." },
+  { title: "Web Development & Design", image: "/swebDesign.jpeg", description: "Comprehensive website development, UI/UX design, e-commerce solutions, and CMS platforms like WordPress and Shopify." },
+  { title: "Cloud Services", image: "/scloudservices.jpeg", description: "Cloud migration, computing solutions on AWS, Azure, and Google Cloud, along with storage and backup solutions." },
+  { title: "Cybersecurity Services", image: "/scybersecurity.jpeg", description: "Protect your business with network security, data encryption, vulnerability assessments, and risk management." },
+  { title: "IT Support & Maintenance", image: "/sitsupport.jpeg", description: "Reliable IT support, including help desk services, remote troubleshooting, server maintenance, and hardware support." },
+  { title: "Data Services", image: "/sdataservices.jpeg", description: "Database management, data analytics, migration, and big data solutions for intelligent decision-making." },
+  { title: "Networking & Infrastructure", image: "/snetwork.jpeg", description: "Efficient network setup and management, VPN configurations, VoIP services, and wireless networking." },
+  { title: "AI & Machine Learning", image: "/sai.jpeg", description: "Harness AI for automation, chatbot development, and machine learning models tailored to your business needs." },
+  { title: "Internet of Things (IoT)", image: "/siot.jpeg", description: "Smart device integration, IoT analytics, and industrial IoT solutions to drive innovation." },
+  { title: "ERP & CRM Solutions", image: "/serp.jpeg", description: "Optimize business processes with Enterprise Resource Planning (ERP) and Customer Relationship Management (CRM) solutions." },
+  { title: "Blockchain & Web3 Solutions", image: "/sblockchain.jpeg", description: "Leading-edge blockchain development, smart contracts, NFT platforms, and cryptocurrency solutions." },
 ];
 
 const Services = () => {
+  const [showAll, setShowAll] = useState(false);
+  const visibleServices = showAll ? services : services.slice(0, 8);
+
   return (
     <section id="services" className="py-20 bg-gray-900 text-white">
       <div className="container mx-auto px-10 text-center">
         <h2 className="text-4xl font-bold mb-6">Services</h2>
-        <h3 className="text-2xl font-semibold mb-12">
-          Transform your business with advanced technologies
-        </h3>
+        <h3 className="text-2xl font-semibold mb-12">Transform your business with advanced technologies</h3>
 
         <div className="grid gap-8 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1">
-          {services.map((service, index) => (
+          {visibleServices.map((service, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 50 }}
@@ -102,13 +44,17 @@ const Services = () => {
               <div className="absolute inset-0 bg-black opacity-50 transition-opacity duration-300 ease-in-out"></div>
               <div className="relative z-10 flex flex-col justify-end h-full p-6 text-left text-white">
                 <h4 className="text-lg font-bold mb-2">{service.title}</h4>
+                <p className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">{service.description}</p>
               </div>
             </motion.div>
           ))}
         </div>
 
-        <button className="mt-10 px-6 py-3 text-lg font-semibold bg-white text-gray-900 rounded-full shadow-lg hover:bg-gray-300 transition">
-          View all topics ↓
+        <button
+          onClick={() => setShowAll(!showAll)}
+          className="mt-10 px-6 py-3 text-lg font-semibold bg-white text-gray-900 rounded-full shadow-lg hover:bg-gray-300 transition"
+        >
+          {showAll ? "Show less ↑" : "View all topics ↓"}
         </button>
       </div>
     </section>
