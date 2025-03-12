@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 const prisma = new PrismaClient();
 
-const SECRET_KEY = process.env.SECRET_KEY as string; // Load from environment variables
+const SECRET_KEY = process.env.SECRET_KEY as string;
 
 if (!SECRET_KEY) {
     throw new Error('SECRET_KEY is not defined in the environment variables.');
@@ -23,7 +23,7 @@ export async function GET(req: Request) {
         let decoded;
         try {
             decoded = jwt.verify(token, SECRET_KEY) as {
-                userId: string;
+                id: string;
                 certificateType: string;
                 iat: number;
                 exp: number;
@@ -33,9 +33,9 @@ export async function GET(req: Request) {
             return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 });
         }
 
-        // Validate token data
+        // Find certificate using `id`
         const certificate = await prisma.certificate.findUnique({
-            where: { userId: decoded.userId },
+            where: { id: decoded.id }, // Use `id` instead of `userId`
         });
 
         if (!certificate) {
@@ -45,13 +45,13 @@ export async function GET(req: Request) {
         return NextResponse.json({
             message: 'Certificate is valid',
             recipient: certificate.recipient,
-            course: decoded.certificateType,
+            course: certificate.course,
             issuedDate: certificate.issuedDate,
         });
     } catch (error) {
         console.error('Error verifying certificate:', error);
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     } finally {
-        await prisma.$disconnect(); // Close connection to prevent leaks
+        await prisma.$disconnect();
     }
 }
