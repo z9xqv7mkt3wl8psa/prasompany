@@ -8,7 +8,6 @@ const services = [
   { title: "E-commerce Solutions", image: "/secommerce.jpg", description: "Build powerful online stores with secure payments, inventory management, and more." },
   { title: "IT Support & Maintenance", image: "/sitsupport.jpeg", description: "Reliable IT support, including help desk services, remote troubleshooting, server maintenance, and hardware support." },
   { title: "Business Intelligence & Analytics", image: "/sbi.jpg", description: "Turn data into insights with BI tools, dashboards, and predictive analytics." },
-  { title: "Business Intelligence & Analytics", image: "/sbi.jpg", description: "Turn data into insights with BI tools, dashboards, and predictive analytics." },
   { title: "Cloud Services", image: "/scloudservices.jpeg", description: "Cloud migration, computing solutions on AWS, Azure, and Google Cloud, along with storage and backup solutions." },
   { title: "Cybersecurity Services", image: "/scybersecurity.jpeg", description: "Protect your business with network security, data encryption, vulnerability assessments, and risk management." },
   { title: "Data Services", image: "/sdataservices.jpeg", description: "Database management, data analytics, migration, and big data solutions for intelligent decision-making." },
