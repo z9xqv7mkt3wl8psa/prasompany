@@ -34,21 +34,28 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 });
     }
 
-    const certificate = await prisma.certificate.findUnique({
-      where: { id: decoded.userId },
-    });
+    console.log("Decoded token:", decoded); // Log decoded token data
 
-    if (!certificate) {
-      return NextResponse.json({ error: 'Certificate not found' }, { status: 404 });
-    }
+const certificate = await prisma.certificate.findUnique({
+  where: {
+    token: decodedToken
+  }
+});
 
-   return NextResponse.json({
+console.log("Fetched certificate:", certificate); // Log fetched certificate
+
+if (!certificate) {
+  return NextResponse.json({ message: "Certificate not found" }, { status: 404 });
+}
+
+return NextResponse.json({
   message: 'Certificate is valid',
-  userId: certificate.id, // Use `id` instead of `recipient`
-  certificateType: certificate.certificateType, // Use `certificateType` instead of `course`
-  issuedAt: certificate.issuedAt, // Use `issuedAt` instead of `issuedDate`
+  userId: certificate.id,
+  certificateType: certificate.certificateType,
+  issuedAt: certificate.issuedAt,
   expiryDate: certificate.expiryDate
 });
+
 
   } catch (error) {
     console.error('Error verifying certificate:', error);
