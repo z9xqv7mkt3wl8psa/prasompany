@@ -33,7 +33,8 @@ function CertificateVerification() {
 
         async function fetchCertificate() {
             try {
-                const res = await fetch(`/api/certificate/verify?token=${token}`);
+                const res = await fetch(`/api/verify?token=${token}`);
+
                 const data = await res.json();
 
                 if (!res.ok) {
