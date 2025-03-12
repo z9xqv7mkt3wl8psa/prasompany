@@ -19,21 +19,21 @@ export default function VerifyPage() {
 
 function CertificateVerification() {
     const searchParams = useSearchParams();
-    const certId = searchParams.get('certId');
+    const token = searchParams.get('token');
     const [certificate, setCertificate] = useState<Certificate | null>(null);
     const [error, setError] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        if (!certId) {
-            setError('Invalid access. Certificate ID is required.');
+        if (!token) {
+            setError('Invalid access. Certificate token is required.');
             setLoading(false);
             return;
         }
 
         async function fetchCertificate() {
             try {
-                const res = await fetch(`/api/certificate/verify?certId=${certId}`);
+                const res = await fetch(`/api/certificate/verify?token=${token}`);
                 const data = await res.json();
 
                 if (!res.ok) {
@@ -50,7 +50,7 @@ function CertificateVerification() {
         }
 
         fetchCertificate();
-    }, [certId]);
+    }, [token]);
 
     if (loading) {
         return <p className="text-gray-500 text-center">Verifying certificate...</p>;
