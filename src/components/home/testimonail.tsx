@@ -9,7 +9,7 @@ import Image from "next/image";
 const testimonials = [
   {
     quote:
-      "Prasunet seamlessly integrated our acquisitions—faster, better, and cost-effectively—with trust and transparency. ",
+      "Prasunet seamlessly integrated our acquisitions faster, better, and cost-effectively with trust and transparency. ",
     name: "Andy Nallappan",
     position: "Former CTO and Head of Software Business Operations, Broadcom Software",
     image: "/t1.jpg",
