@@ -36,7 +36,8 @@ function CertificateVerification() {
                 console.log(`Fetching certificate with token: ${token}`);
 
                 // Ensure the URL is consistent with the API route
-                const res = await fetch(`/verify?token=${token}`); 
+                const res = await fetch(`/api/verify?token=${token}`); 
+
 
                 if (!res.ok) {
                     const errorData = await res.json();
