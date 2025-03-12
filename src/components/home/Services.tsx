@@ -76,7 +76,7 @@ const Services = () => {
           onClick={() => setShowAll(!showAll)}
           className="mt-10 px-6 py-3 text-lg font-semibold bg-white text-gray-900 rounded-full shadow-lg hover:bg-gray-300 transition"
         >
-          {showAll ? "Show less ↑" : "View all topics ↓"}
+          {showAll ? "Show less ↑" : "View all Services ↓"}
         </button>
       </div>
     </section>
