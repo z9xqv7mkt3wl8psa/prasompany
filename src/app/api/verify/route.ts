@@ -38,7 +38,7 @@ export async function GET(req: Request) {
 
 const certificate = await prisma.certificate.findUnique({
   where: {
-    token: decodedToken
+    token: decoded.token
   }
 });
 
