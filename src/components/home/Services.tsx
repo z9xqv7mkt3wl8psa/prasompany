@@ -15,7 +15,29 @@ const services = [
   { title: "Internet of Things (IoT)", image: "/siot.jpeg", description: "Smart device integration, IoT analytics, and industrial IoT solutions to drive innovation." },
   { title: "ERP & CRM Solutions", image: "/serp.jpeg", description: "Optimize business processes with Enterprise Resource Planning (ERP) and Customer Relationship Management (CRM) solutions." },
   { title: "Blockchain & Web3 Solutions", image: "/sblockchain.jpeg", description: "Leading-edge blockchain development, smart contracts, NFT platforms, and cryptocurrency solutions." },
+  { title: "DevOps & Automation Services", image: "/sdevops.jpeg", description: "Streamline development pipelines, automate deployments, and enhance collaboration." },
+  { title: "Custom Software Integration", image: "/scustoionmintegrat.jpeg", description: "Seamlessly integrate third-party software into your existing systems for enhanced functionality." },
+  { title: "Mobile App Development (iOS & Android)", image: "/smobileapp.jpeg", description: "Build powerful, user-friendly apps tailored for iOS and Android platforms." },
+  { title: "SaaS (Software as a Service) Development", image: "/ssaas.jpeg", description: "Create scalable, cloud-based SaaS applications for businesses of all sizes." },
+  { title: "Big Data Solutions", image: "/sbigdata.jpeg", description: "Leverage big data frameworks to process, analyze, and visualize complex data sets." },
+  { title: "Business Intelligence & Analytics", image: "/sbi.jpeg", description: "Turn data into insights with BI tools, dashboards, and predictive analytics." },
+  { title: "UI/UX Design & Prototyping", image: "/suiux.jpeg", description: "Craft intuitive interfaces and interactive prototypes for web and mobile applications." },
+  { title: "Digital Marketing & SEO Services", image: "/smarketing.jpeg", description: "Boost your online presence with SEO, content marketing, PPC, and social media strategies." },
+  { title: "IT Project Management", image: "/sprojectmgmt.jpeg", description: "Ensure projects are delivered on time and on budget with expert IT management services." },
+  { title: "Robotic Process Automation (RPA)", image: "/srpa.jpeg", description: "Automate repetitive business tasks using advanced RPA technologies." },
+  { title: "E-commerce Solutions", image: "/secommerce.jpeg", description: "Build powerful online stores with secure payments, inventory management, and more." },
+  { title: "IT Training & Skill Development", image: "/straining.jpeg", description: "Empower your workforce with IT skill development and professional training programs." },
+  { title: "Virtual & Augmented Reality (VR/AR) Solutions", image: "/svrar.jpeg", description: "Create immersive VR/AR experiences for training, marketing, and interactive solutions." },
+  { title: "Game Development", image: "/sgamedev.jpeg", description: "Develop engaging, high-performance games for mobile, console, and web platforms." },
+  { title: "Embedded Systems Development", image: "/sembedded.jpeg", description: "Design and program embedded software for smart devices and IoT hardware." },
+  { title: "Quality Assurance & Testing Services", image: "/sqa.jpeg", description: "Ensure software reliability with manual and automated testing solutions." },
+  { title: "API Development & Integration", image: "/sapi.jpeg", description: "Build robust APIs and integrate third-party services seamlessly into your applications." },
+  { title: "Legacy System Modernization", image: "/slegacy.jpeg", description: "Upgrade and modernize outdated software to improve performance and usability." },
+  { title: "IT Compliance & Risk Management", image: "/scompliance.jpeg", description: "Ensure regulatory compliance and manage IT risks effectively." },
+  { title: "Managed IT Services", image: "/smanagedit.jpeg", description: "Comprehensive IT support, monitoring, and management services for businesses." }
+  
 ];
+
 
 const Services = () => {
   const [showAll, setShowAll] = useState(false);
