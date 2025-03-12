@@ -13,9 +13,9 @@ const Stats = () => {
       <div className="relative z-10 container mx-auto px-6 text-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
         {/* Stat Item */}
         <div className="flex flex-col items-center space-y-4">
-          <Clock size={60} className="text-pink-400" /> {/* Increased Icon Size & Color */}
-          <h3 className="text-5xl font-bold">12500</h3>
-          <p className="text-lg">Working Hours</p>
+          <Worldwide size={60} className="text-pink-400" /> {/* Increased Icon Size & Color */}
+          <h3 className="text-5xl font-bold">65+</h3>
+          <p className="text-lg">Multinational</p>
         </div>
 
         <div className="flex flex-col items-center space-y-4">
