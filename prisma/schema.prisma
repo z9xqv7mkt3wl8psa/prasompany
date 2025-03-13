@@ -54,12 +54,13 @@ model Subscriber {
   createdAt DateTime @default(now())
 }
 model Certificate {
-  id               String  @id // Primary key to match userId
-  certificateType  String  
-  expiryDate       String
-  issuedAt         String
-  token            String  @unique
+  id              String   @id @default(uuid())
+  certificateType String
+  issuedAt        DateTime
+  expiryDate      DateTime
+  token           String   @unique
 }
+
 
 
 
