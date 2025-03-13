@@ -71,7 +71,7 @@ export default function LearnMorePage() {
       Your Trusted Partner in Innovation, Technology, and Success
     </h1>
   </section>
-</div>
+
 
 
       {/* About Us */}
