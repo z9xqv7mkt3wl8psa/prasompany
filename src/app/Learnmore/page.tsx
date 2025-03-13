@@ -2,19 +2,39 @@
 import { useState, useEffect } from "react";
 
 const services = [
-  { title: "Software Development", description: "Custom software, web & mobile app development, enterprise solutions, and SaaS platforms." },
-  { title: "IT Consulting & Strategy", description: "Expert consulting for IT infrastructure, digital transformation, automation, and project management." },
-  { title: "Web Development & Design", description: "Website development, UI/UX design, e-commerce solutions, and CMS platforms like WordPress & Shopify." },
-  { title: "Cloud Services", description: "Cloud migration, computing on AWS, Azure, Google Cloud, and storage & backup solutions." },
-  { title: "Cybersecurity Services", description: "Network security, data encryption, vulnerability assessments, and risk management." },
-  { title: "IT Support & Maintenance", description: "Help desk services, remote troubleshooting, server maintenance, and hardware support." },
-  { title: "Data Services", description: "Database management, data analytics, migration, and big data solutions for intelligent decisions." },
-  { title: "Networking & Infrastructure", description: "Network setup, VPN configurations, VoIP services, and wireless networking." },
-  { title: "AI & Machine Learning", description: "Automation, chatbot development, and machine learning models tailored to your business needs." },
-  { title: "Internet of Things (IoT)", description: "Smart device integration, IoT analytics, and industrial IoT solutions." },
-  { title: "ERP & CRM Solutions", description: "Enterprise Resource Planning (ERP) & Customer Relationship Management (CRM) solutions." },
-  { title: "Blockchain & Web3 Solutions", description: "Blockchain development, smart contracts, NFT platforms, and cryptocurrency solutions." }
-];
+ { title: "Software Development", image: "/ssoftware.jpeg", description: "Custom software development, web and mobile application development, enterprise solutions, and SaaS platforms." },
+  { title: "IT Consulting & Strategy", image: "/sITconsulting.jpeg", description: "Expert consulting for IT infrastructure, digital transformation, automation, and project management." },
+  { title: "E-commerce Solutions", image: "/secommerce.jpg", description: "Build powerful online stores with secure payments, inventory management, and more." },
+  { title: "IT Support & Maintenance", image: "/sitsupport.jpeg", description: "Reliable IT support, including help desk services, remote troubleshooting, server maintenance, and hardware support." },
+  { title: "Business Intelligence & Analytics", image: "/sbi.jpg", description: "Turn data into insights with BI tools, dashboards, and predictive analytics." },
+  { title: "Cloud Services", image: "/scloudservices.jpeg", description: "Cloud migration, computing solutions on AWS, Azure, and Google Cloud, along with storage and backup solutions." },
+  { title: "Cybersecurity Services", image: "/scybersecurity.jpeg", description: "Protect your business with network security, data encryption, vulnerability assessments, and risk management." },
+  { title: "Data Services", image: "/sdataservices.jpeg", description: "Database management, data analytics, migration, and big data solutions for intelligent decision-making." },
+  { title: "Networking & Infrastructure", image: "/snetwork.jpeg", description: "Efficient network setup and management, VPN configurations, VoIP services, and wireless networking." },
+  { title: "AI & Machine Learning", image: "/sai.jpeg", description: "Harness AI for automation, chatbot development, and machine learning models tailored to your business needs." },
+  { title: "Internet of Things (IoT)", image: "/siot.jpeg", description: "Smart device integration, IoT analytics, and industrial IoT solutions to drive innovation." },
+  { title: "ERP & CRM Solutions", image: "/serp.jpeg", description: "Optimize business processes with Enterprise Resource Planning (ERP) and Customer Relationship Management (CRM) solutions." },
+  { title: "Blockchain & Web3 Solutions", image: "/sblockchain.jpeg", description: "Leading-edge blockchain development, smart contracts, NFT platforms, and cryptocurrency solutions." },
+  { title: "DevOps & Automation Services", image: "/sdevops.jpg", description: "Streamline development pipelines, automate deployments, and enhance collaboration." },
+  { title: "Custom Software Integration", image: "/scustoionmintegrat.jpg", description: "Seamlessly integrate third-party software into your existing systems for enhanced functionality." },
+  { title: "Mobile App Development (iOS & Android)", image: "/smobileapp.jpg", description: "Build powerful, user-friendly apps tailored for iOS and Android platforms." },
+  { title: "Web Development & Design", image: "/swebDesign.jpeg", description: "Comprehensive website development, UI/UX design, e-commerce solutions, and CMS platforms like WordPress and Shopify." },
+  { title: "SaaS (Software as a Service) Development", image: "/ssaas.jpg", description: "Create scalable, cloud-based SaaS applications for businesses of all sizes." },
+  { title: "Big Data Solutions", image: "/sbigdata.jpg", description: "Leverage big data frameworks to process, analyze, and visualize complex data sets." },
+  { title: "UI/UX Design & Prototyping", image: "/suiux.jpg", description: "Craft intuitive interfaces and interactive prototypes for web and mobile applications." },
+  { title: "Digital Marketing & SEO Services", image: "/smarketing.jpg", description: "Boost your online presence with SEO, content marketing, PPC, and social media strategies." },
+  { title: "IT Project Management", image: "/sprojectmgmt.jpg", description: "Ensure projects are delivered on time and on budget with expert IT management services." },
+  { title: "Robotic Process Automation (RPA)", image: "/srpa.jpg", description: "Automate repetitive business tasks using advanced RPA technologies." },
+  { title: "IT Training & Skill Development", image: "/straining.jpg", description: "Empower your workforce with IT skill development and professional training programs." },
+  { title: "Virtual & Augmented Reality (VR/AR) Solutions", image: "/svrar.jpg", description: "Create immersive VR/AR experiences for training, marketing, and interactive solutions." },
+  { title: "Game Development", image: "/sgamedev.jpg", description: "Develop engaging, high-performance games for mobile, console, and web platforms." },
+  { title: "Embedded Systems Development", image: "/sembedded.jpg", description: "Design and program embedded software for smart devices and IoT hardware." },
+  { title: "Quality Assurance & Testing Services", image: "/sqa.jpg", description: "Ensure software reliability with manual and automated testing solutions." },
+  { title: "API Development & Integration", image: "/sapi.jpg", description: "Build robust APIs and integrate third-party services seamlessly into your applications." },
+  { title: "Legacy System Modernization", image: "/slegacy.jpg", description: "Upgrade and modernize outdated software to improve performance and usability." },
+  { title: "IT Compliance & Risk Management", image: "/scompliance.jpg", description: "Ensure regulatory compliance and manage IT risks effectively." },
+  { title: "Managed IT Services", image: "/smanagedit.jpg", description: "Comprehensive IT support, monitoring, and management services for businesses." }
+  ];
 
 export default function LearnMorePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -40,17 +60,19 @@ export default function LearnMorePage() {
   }, [isMobile]);
 
   return (
-    <div className="bg-gray-100 min-h-screen">
-      {/* Hero Section */}
-      <section
-        className="relative w-full h-[60vh] bg-cover bg-center flex items-center justify-center"
-        style={{ backgroundImage: "url('/home4.jpg')" }}
-      >
-        <div className="absolute inset-0 bg-black/50"></div>
-        <h1 className="text-5xl md:text-6xl font-bold text-white relative z-10">
-          Your Trusted Partner in Innovation, Technology, and Success 
-        </h1>
-      </section>
+  <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
+  {/* Hero Section */}
+  <section
+    className="relative w-full h-[60vh] bg-cover bg-center flex items-center justify-center"
+    style={{ backgroundImage: "url('/home4.jpg')" }}
+  >
+    <div className="absolute inset-0 bg-black/50"></div>
+    <h1 className="text-5xl md:text-6xl font-bold text-white text-center relative z-10">
+      Your Trusted Partner in Innovation, Technology, and Success
+    </h1>
+  </section>
+</div>
+
 
       {/* About Us */}
       <section className="container mx-auto py-16 px-6 text-center">
@@ -123,7 +145,7 @@ export default function LearnMorePage() {
           Ready to take your business to the next level? Contact Prasunet IT Services today!
         </p>
         <a
-          href="/Cont"
+          href="/business"
           className="mt-6 inline-block bg-blue-600 text-white text-lg px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
         >
           Contact Us
