@@ -1,9 +1,5 @@
-import dynamic from 'next/dynamic';
-
-const VerifyClient = dynamic(() => import('./VerifyClient'), {
-    ssr: false,
-});
+import VerifyClientWrapper from './VerifyClientWrapper';
 
 export default function Verify() {
-    return <VerifyClient />;
+    return <VerifyClientWrapper />;
 }
