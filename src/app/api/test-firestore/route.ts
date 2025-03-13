@@ -1,21 +1,56 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/certificate/firebase-admin';
+import { NextResponse } from 'next/server';
+import { getFirestore } from 'firebase-admin/firestore';
+import jwt from 'jsonwebtoken';
 
-export async function GET() {
+const db = getFirestore();
+const SECRET_KEY = process.env.SECRET_KEY;
+
+if (!SECRET_KEY) {
+  throw new Error('❌ SECRET_KEY is not defined in the environment variables.');
+}
+
+export async function POST(req: Request) {
   try {
-    console.log('🔎 Testing Firestore connection...');
-    const snapshot = await db.collection('certificates').get();
+    const body = await req.json();
 
-    const certificates = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    console.log('Incoming POST request:', body);
 
-    console.log('✅ Firestore data:', certificates);
+    const { tokens } = body;
 
-    return NextResponse.json(certificates);
+    if (!tokens || !Array.isArray(tokens)) {
+      return NextResponse.json({ message: 'Invalid or missing token data' }, { status: 400 });
+    }
+
+    const generatedTokens = [];
+
+    for (const tokenData of tokens) {
+      console.log('Processing tokenData:', tokenData);
+
+      const { userId, certificateType } = tokenData;
+
+      if (!userId || !certificateType) {
+        return NextResponse.json({ message: 'Missing userId or certificateType' }, { status: 400 });
+      }
+
+      const token = jwt.sign(
+        { userId, certificateType },
+        SECRET_KEY,
+        { expiresIn: '1y' }
+      );
+
+      await db.collection('certificates').doc(userId).set({
+        token,
+        certificateType,
+        issuedAt: new Date().toISOString(),
+        expiryDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString()
+      });
+
+      generatedTokens.push({ userId, token });
+    }
+
+    return NextResponse.json({ tokens: generatedTokens });
   } catch (error) {
-    console.error('🔥 Firestore test failed:', error);
-    return NextResponse.json({ error: 'Failed to connect to Firestore.' }, { status: 500 });
+    console.error('🔥 Error generating tokens:', error);
+    return NextResponse.json({ message: 'Failed to generate tokens' }, { status: 500 });
   }
 }
