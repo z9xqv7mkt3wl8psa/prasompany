@@ -2,22 +2,33 @@ import { NextResponse } from 'next/server';
 import { getFirestore } from 'firebase-admin/firestore';
 import jwt from 'jsonwebtoken';
 import admin from 'firebase-admin';
+import fs from 'fs';
+import path from 'path';
 
 if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert({
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-    }),
-  });
+  try {
+    const serviceAccountPath = path.resolve('src/certificate/firebase-service-key.json');
+    const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf-8'));
+
+    admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId: serviceAccount.project_id,
+        clientEmail: serviceAccount.client_email,
+        privateKey: serviceAccount.private_key.replace(/\\n/g, '\n'),
+      }),
+    });
+    console.log('✅ Firebase initialized successfully.');
+  } catch (error) {
+    console.error('🔥 Error initializing Firebase:', error);
+    throw new Error('Failed to load Firebase service account key.');
+  }
 }
 
 const db = getFirestore();
-const SECRET_KEY = process.env.SECRET_KEY as string;
+const SECRET_KEY = process.env.SECRET_KEY;
 
 if (!SECRET_KEY) {
-  throw new Error('SECRET_KEY is not defined in the environment variables.');
+  throw new Error('❌ SECRET_KEY is not defined in the environment variables.');
 }
 
 export async function GET(req: Request) {
@@ -29,10 +40,8 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'Certificate token is required.' }, { status: 400 });
     }
 
-    // ✅ Just verify the token without assigning it
     jwt.verify(token, SECRET_KEY);
 
-    // ✅ Firestore Query Improvement
     const snapshot = await db
       .collection('certificates')
       .where('token', '==', token)
@@ -51,7 +60,7 @@ export async function GET(req: Request) {
       issuedDate: certificate.issuedAt || null,
     });
   } catch (error) {
-    console.error('Internal Server Error:', error);
+    console.error('🔥 Internal Server Error:', error);
     return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
   }
 }
