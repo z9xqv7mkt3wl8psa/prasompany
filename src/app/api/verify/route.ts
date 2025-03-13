@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 const prisma = new PrismaClient({
   log: ['query', 'info', 'warn', 'error'],
@@ -10,6 +10,11 @@ const SECRET_KEY = process.env.SECRET_KEY as string;
 
 if (!SECRET_KEY) {
   throw new Error('SECRET_KEY is not defined in the environment variables.');
+}
+
+interface DecodedToken extends JwtPayload {
+  userId: string;
+  certificateType: string;
 }
 
 export async function GET(req: Request) {
@@ -24,24 +29,18 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'Certificate token is required' }, { status: 400 });
     }
 
-    let decoded;
+    let decoded: DecodedToken;
     try {
-      decoded = jwt.verify(token, SECRET_KEY) as {
-        userId: string;
-        certificateType: string;
-        iat: number;
-        exp: number;
-      };
+      decoded = jwt.verify(token, SECRET_KEY) as DecodedToken;
       console.log('Decoded token:', decoded);
-    } catch (_error) {
-      console.error('JWT verification failed:', _error);
+    } catch (err) {
+      console.error('JWT verification failed:', err);
       return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 });
     }
 
     console.log('Searching for certificate in the database...');
 
-    // Use decoded fields to find the certificate
-    const certificate = await prisma.certificate.findFirst({
+    const certificate = await prisma.certificate.findUnique({
       where: { token },
     });
 
@@ -54,16 +53,14 @@ export async function GET(req: Request) {
 
     return NextResponse.json({
       message: 'Certificate is valid',
-      recipient: certificate.recipient ?? 'Unknown', // Make sure fields exist
-      course: certificate.certificateType ?? 'Unknown',
-      issuedDate: certificate.issuedAt ?? null,
+      recipient: certificate.recipient || 'Unknown',
+      course: certificate.certificateType || 'Unknown',
+      issuedDate: certificate.issuedAt?.toISOString() || null,
     });
-
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error verifying certificate:', error);
 
-    // Handle Prisma-specific errors
-    if (error.code === 'P2025') {
+    if ((error as { code?: string }).code === 'P2025') {
       return NextResponse.json({ error: 'Record not found' }, { status: 404 });
     }
 
