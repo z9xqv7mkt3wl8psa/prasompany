@@ -10,9 +10,10 @@ interface CertificateData {
         internshipDomain: string;
         name: string;
     };
-    expiryDate: string;
     issuedAt: string;
+    expiryDate: string;
     token: string;
+    internId: string;
 }
 
 interface Result {
@@ -64,43 +65,44 @@ export default function VerifyClient() {
         }
     }, [token]);
 
-    if (result === null) {
-        return <div>Loading...</div>; // Show a loading message while fetching
-    }
+    return (
+        <div style={{ fontFamily: 'Arial, sans-serif' }}>
+            <header style={{ textAlign: 'center', padding: '20px', backgroundColor: '#f0f0f0', marginBottom: '20px' }}>
+                <h1 style={{ margin: '0', color: '#333' }}>Prasunet Company</h1>
+                <p style={{ margin: '5px 0', color: '#666', fontStyle: 'italic' }}>Tech Bharat, Global Impact.</p>
+            </header>
 
-    if (result.error) {
-        return (
-            <div style={{ textAlign: 'center', padding: '20px', border: '1px solid red', backgroundColor: '#ffe6e6' }}>
-                <h1>Verification Result</h1>
-                <p style={{ color: 'red' }}>Error: {result.error}</p>
+            <div style={{ maxWidth: '600px', margin: '0 auto', padding: '0 20px' }}>
+                {result === null && <div>Loading...</div>}
+
+                {result?.error && (
+                    <div style={{ textAlign: 'center', padding: '20px', border: '1px solid red', backgroundColor: '#ffe6e6' }}>
+                        <h1>Verification Result</h1>
+                        <p style={{ color: 'red' }}>Error: {result.error}</p>
+                    </div>
+                )}
+
+                {result?.status === 'Not Verified' && (
+                    <div style={{ textAlign: 'center', padding: '20px', border: '1px solid orange', backgroundColor: '#fff3e6' }}>
+                        <h1>Verification Result</h1>
+                        <p style={{ color: 'orange' }}>Certificate Not Verified</p>
+                    </div>
+                )}
+
+                {result?.status === 'Verified' && result.certificate && (
+                    <div style={{ textAlign: 'center', padding: '20px', border: '1px solid green', backgroundColor: '#e6ffe6' }}>
+                        <h1>Verification Result</h1>
+                        <p style={{ color: 'green' }}>Certificate Verified</p>
+                        <div style={{ textAlign: 'left', marginTop: '20px' }}>
+                            <p><strong>Name:</strong> {result.certificate.certificateType.name}</p>
+                            <p><strong>Internship Domain:</strong> {result.certificate.certificateType.internshipDomain}</p>
+                            <p><strong>Intern ID:</strong> {result.certificate.internId}</p>
+                            <p><strong>Issued At:</strong> {new Date(result.certificate.issuedAt).toLocaleDateString()}</p>
+                            <p><strong>Valid Until:</strong> {new Date(result.certificate.expiryDate).toLocaleDateString()}</p>
+                        </div>
+                    </div>
+                )}
             </div>
-        );
-    }
-
-    if (result.status === 'Not Verified') {
-        return (
-            <div style={{ textAlign: 'center', padding: '20px', border: '1px solid orange', backgroundColor: '#fff3e6' }}>
-                <h1>Verification Result</h1>
-                <p style={{ color: 'orange' }}>Certificate Not Verified</p>
-            </div>
-        );
-    }
-
-    if (result.status === 'Verified' && result.certificate) {
-        const certificate = result.certificate;
-        return (
-            <div style={{ textAlign: 'center', padding: '20px', border: '1px solid green', backgroundColor: '#e6ffe6', maxWidth: '600px', margin: '0 auto' }}>
-                <h1>Verification Result</h1>
-                <p style={{ color: 'green' }}>Certificate Verified</p>
-                <div style={{ textAlign: 'left', marginTop: '20px' }}>
-                    <p><strong>Name:</strong> {certificate.certificateType.name}</p>
-                    <p><strong>Internship Domain:</strong> {certificate.certificateType.internshipDomain}</p>
-                    <p><strong>Issued At:</strong> {new Date(certificate.issuedAt).toLocaleDateString()}</p>
-                    <p><strong>Expiry Date:</strong> {new Date(certificate.expiryDate).toLocaleDateString()}</p>
-                </div>
-            </div>
-        );
-    }
-
-    return null; // Handle any unexpected cases
+        </div>
+    );
 }
