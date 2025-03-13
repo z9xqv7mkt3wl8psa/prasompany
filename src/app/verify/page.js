@@ -1,22 +1,19 @@
-'use client'; // Important: Use client-side rendering
+'use client';
 
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApps } from 'firebase/app'; // Import getApps
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA_XvAPygXMMMddn7NsqsogzDpM-FXDgeI",
-  authDomain: "cert-final-c1409.firebaseapp.com",
-  projectId: "cert-final-c1409",
-  storageBucket: "cert-final-c1409.firebasestorage.app",
-  messagingSenderId: "948127703754",
-  appId: "1:948127703754:web:03289910ff99fb33ee4a33",
-  measurementId: "G-PBNBSHK135"
+    apiKey: "AIzaSyA_XvAPygXMMMddn7NsqsogzDpM-FXDgeI",
+    authDomain: "cert-final-c1409.firebaseapp.com",
+    projectId: "cert-final-c1409",
+    storageBucket: "cert-final-c1409.firebasestorage.app",
+    messagingSenderId: "948127703754",
+    appId: "1:948127703754:web:03289910ff99fb33ee4a33",
+    measurementId: "G-PBNBSHK135"
 };
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 
 export default function Verify() {
     const searchParams = useSearchParams();
@@ -25,6 +22,12 @@ export default function Verify() {
 
     useEffect(() => {
         if (token) {
+            // Conditional Firebase initialization
+            if (getApps().length === 0) {
+                initializeApp(firebaseConfig);
+            }
+            const db = getFirestore();
+
             const verifyToken = async () => {
                 try {
                     const certificateDoc = doc(db, 'certificates', token);
@@ -35,7 +38,7 @@ export default function Verify() {
                     } else {
                         setResult({ status: 'Not Verified' });
                     }
-                } catch { // Corrected catch block
+                } catch {
                     setResult({ error: 'Error during verification' });
                 }
             };
