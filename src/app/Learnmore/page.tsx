@@ -48,7 +48,7 @@ export default function LearnMorePage() {
       >
         <div className="absolute inset-0 bg-black/50"></div>
         <h1 className="text-5xl md:text-6xl font-bold text-white relative z-10">
-          About Prasunet IT Services
+          Your Trusted Partner in Innovation, Technology, and Success 
         </h1>
       </section>
 
@@ -123,7 +123,7 @@ export default function LearnMorePage() {
           Ready to take your business to the next level? Contact Prasunet IT Services today!
         </p>
         <a
-          href="/contact"
+          href="/Cont"
           className="mt-6 inline-block bg-blue-600 text-white text-lg px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
         >
           Contact Us
