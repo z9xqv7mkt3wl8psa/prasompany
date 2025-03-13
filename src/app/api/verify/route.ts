@@ -34,14 +34,20 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 });
     }
 
-    console.log("Decoded token:", decoded);
+    
 
     // Use token directly instead of decoded.token
-    const certificate = await prisma.certificate.findUnique({
-      where: {
-        token: token
-      }
-    });
+   console.log("Decoded token:", decoded);
+console.log("Searching for token:", token);
+
+const certificate = await prisma.certificate.findFirst({
+  where: { token: token }
+});
+
+console.log("Certificate result:", certificate);
+
+
+
 
     console.log("Fetched certificate:", certificate);
 
