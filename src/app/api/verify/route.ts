@@ -1,47 +1,38 @@
-import { NextResponse } from 'next/server';
-import { getFirestore } from 'firebase-admin/firestore';
+import { NextRequest, NextResponse } from 'next/server';
+import { db } from '@/certificate/firebase-admin';
 import jwt from 'jsonwebtoken';
-import admin from 'firebase-admin';
-import fs from 'fs';
-import path from 'path';
 
-if (!admin.apps.length) {
-  try {
-    const serviceAccountPath = path.resolve('src/certificate/firebase-service-key.json');
-    const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf-8'));
-
-    admin.initializeApp({
-      credential: admin.credential.cert({
-        projectId: serviceAccount.project_id,
-        clientEmail: serviceAccount.client_email,
-        privateKey: serviceAccount.private_key.replace(/\\n/g, '\n'),
-      }),
-    });
-    console.log('✅ Firebase initialized successfully.');
-  } catch (error) {
-    console.error('🔥 Error initializing Firebase:', error);
-    throw new Error('Failed to load Firebase service account key.');
-  }
-}
-
-const db = getFirestore();
 const SECRET_KEY = process.env.SECRET_KEY;
 
 if (!SECRET_KEY) {
   throw new Error('❌ SECRET_KEY is not defined in the environment variables.');
 }
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
+  console.log('🔎 Starting certificate verification...');
+
   try {
     const { searchParams } = new URL(req.url);
     const token = searchParams.get('token');
 
     if (!token) {
+      console.error('❌ Missing token in request');
       return NextResponse.json({ error: 'Certificate token is required.' }, { status: 400 });
     }
 
-    // ✅ Type assertion to fix TypeScript error
-    jwt.verify(token, SECRET_KEY as string);
+    // Decode the JWT token
+    let decoded;
+    try {
+      decoded = jwt.verify(token, SECRET_KEY);
+      console.log('✅ Decoded token:', decoded);
+    } catch (error) {
+      console.error('❌ Invalid token:', error);
+      return NextResponse.json({ error: 'Invalid token.' }, { status: 401 });
+    }
+
+    const { userId, certificateType } = decoded as { userId: string; certificateType: string };
+
+    console.log(`🔎 Searching for certificate - userId: ${userId}, certificateType: ${certificateType}`);
 
     const snapshot = await db
       .collection('certificates')
@@ -49,10 +40,12 @@ export async function GET(req: Request) {
       .get();
 
     if (snapshot.empty) {
+      console.error('❌ Certificate not found');
       return NextResponse.json({ error: 'Certificate not found.' }, { status: 404 });
     }
 
     const certificate = snapshot.docs[0].data();
+    console.log('✅ Certificate found:', certificate);
 
     return NextResponse.json({
       message: 'Certificate is valid',
