@@ -30,30 +30,34 @@ function CertificateVerification() {
             setLoading(false);
             return;
         }
+interface Certificate {
+  recipient: string;
+  course: string;
+  issuedDate: string;
+}
 
-        async function fetchCertificate() {
-            try {
-                console.log(`Fetching certificate with token: ${token}`);
+async function fetchCertificate() {
+  try {
+    console.log(`Fetching certificate with token: ${token}`);
 
-                // Ensure the URL is consistent with the API route
-                const res = await fetch(`/api/verify?token=${token}`); 
+    const res = await fetch(`/api/verify?token=${token}`);
+    if (!res.ok) {
+      const errorData = await res.json();
+      console.warn('API Error:', errorData);
+      throw new Error(errorData.error || 'Failed to fetch certificate details.');
+    }
 
+    const data = await res.json();
+    console.log('Fetched certificate data:', data);
 
-                if (!res.ok) {
-                    const errorData = await res.json();
-                    throw new Error(errorData.error || 'Failed to fetch certificate details.');
-                }
-
-                const data = await res.json();
-
-                setCertificate(data);
-            } catch (error) {
-                console.error('Error fetching certificate:', error);
-                setError((error as Error).message);
-            } finally {
-                setLoading(false);
-            }
-        }
+    setCertificate(data);
+  } catch (error) {
+    console.error('Error fetching certificate:', error);
+    setError((error as Error).message);
+  } finally {
+    setLoading(false);
+  }
+}
 
         fetchCertificate();
     }, [token]);
