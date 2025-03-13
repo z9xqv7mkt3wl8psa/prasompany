@@ -3,12 +3,19 @@
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { initializeApp, getApps } from 'firebase/app';
-import { getFirestore, doc, getDoc, DocumentSnapshot } from 'firebase/firestore'; // Import DocumentSnapshot
+import { getFirestore, doc, getDoc, DocumentSnapshot } from 'firebase/firestore';
+
+interface CertificateData {
+    name: string;
+    issueDate: string;
+    certificateId: string;
+    // Add other fields and their types
+}
 
 interface Result {
     status?: string;
     error?: string;
-    certificate?: any; // Adjust type as needed
+    certificate?: CertificateData;
 }
 
 const firebaseConfig = {
@@ -39,7 +46,7 @@ export default function VerifyClient() {
                     const certificateSnapshot: DocumentSnapshot = await getDoc(certificateDoc);
 
                     if (certificateSnapshot.exists()) {
-                        setResult({ status: 'Verified', certificate: certificateSnapshot.data() });
+                        setResult({ status: 'Verified', certificate: certificateSnapshot.data() as CertificateData });
                     } else {
                         setResult({ status: 'Not Verified' });
                     }
