@@ -1,16 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
-import admin from '@/certificate/firebase-admin';
+import { db } from '@/certificate/firebase-admin';
 
 export async function GET() {
   try {
-    const snapshot = await admin.firestore().collection('certificates').get();
-    const data = snapshot.docs.map((doc) => doc.data());
+    console.log('🔎 Testing Firestore connection...');
+    const snapshot = await db.collection('certificates').get();
 
-    console.log('Firestore Data:', data);
+    const certificates = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
 
-    return NextResponse.json(data);
+    console.log('✅ Firestore data:', certificates);
+
+    return NextResponse.json(certificates);
   } catch (error) {
-    console.error('Firestore Error:', error);
-    return NextResponse.json({ message: 'Firestore error', error: (error as Error).message }, { status: 500 });
+    console.error('🔥 Firestore test failed:', error);
+    return NextResponse.json({ error: 'Failed to connect to Firestore.' }, { status: 500 });
   }
 }
