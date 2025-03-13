@@ -1,10 +1,20 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { getFirestore } from 'firebase-admin/firestore';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import admin from 'firebase-admin';
 
-const prisma = new PrismaClient({
-  log: ['query', 'info', 'warn', 'error'],
-});
+// Initialize Firebase Admin SDK if not already initialized
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+    }),
+  });
+}
+
+const db = getFirestore();
 
 const SECRET_KEY = process.env.SECRET_KEY as string;
 
@@ -38,34 +48,27 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 });
     }
 
-    console.log('Searching for certificate in the database...');
+    console.log('Searching for certificate in Firestore...');
 
-    const certificate = await prisma.certificate.findUnique({
-      where: { token },
-    });
+    const snapshot = await db.collection('certificates').where('token', '==', token).get();
 
-    console.log('Certificate result from DB:', certificate);
-
-    if (!certificate) {
+    if (snapshot.empty) {
       console.warn('Certificate not found for token:', token);
-      return NextResponse.json({ message: 'Certificate not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Certificate not found' }, { status: 404 });
     }
+
+    const certificate = snapshot.docs[0].data();
+
+    console.log('Certificate result from Firestore:', certificate);
 
     return NextResponse.json({
       message: 'Certificate is valid',
-      recipient: certificate.recipient || 'Unknown',
+      recipient: certificate.name || 'Unknown',
       course: certificate.certificateType || 'Unknown',
-      issuedDate: certificate.issuedAt?.toISOString() || null,
+      issuedDate: certificate.issuedAt || null,
     });
   } catch (error) {
     console.error('Error verifying certificate:', error);
-
-    if ((error as { code?: string }).code === 'P2025') {
-      return NextResponse.json({ error: 'Record not found' }, { status: 404 });
-    }
-
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 }
