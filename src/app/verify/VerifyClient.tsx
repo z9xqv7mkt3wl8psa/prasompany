@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { initializeApp, getApps } from 'firebase/app';
-import { getFirestore, collection, query, where, getDocs, QuerySnapshot } from 'firebase/firestore'; // Import query, where, getDocs, QuerySnapshot
+import { getFirestore, collection, query, where, getDocs, QuerySnapshot } from 'firebase/firestore';
 
 interface CertificateData {
     certificateType: {
@@ -44,34 +44,63 @@ export default function VerifyClient() {
             const db = getFirestore();
 
             const verifyToken = async () => {
-    try {
-        const certificatesCollection = collection(db, 'certificates');
-        const q = query(certificatesCollection, where('token', '==', token));
-        const querySnapshot: QuerySnapshot = await getDocs(q);
+                try {
+                    const certificatesCollection = collection(db, 'certificates');
+                    const q = query(certificatesCollection, where('token', '==', token));
+                    const querySnapshot: QuerySnapshot = await getDocs(q);
 
-        console.log('Query Snapshot:', querySnapshot); // Log the query snapshot
-
-        if (!querySnapshot.empty) {
-            const doc = querySnapshot.docs[0];
-            console.log('Document Data:', doc.data()); // Log the document data
-            setResult({ status: 'Verified', certificate: doc.data() as CertificateData });
-        } else {
-            console.log('Document not found for token:', token); // Log when no document is found
-            setResult({ status: 'Not Verified' });
-        }
-    } catch (error) {
-        console.error('Verification error:', error);
-        setResult({ error: 'Error during verification' });
-    }
-};
+                    if (!querySnapshot.empty) {
+                        const doc = querySnapshot.docs[0];
+                        setResult({ status: 'Verified', certificate: doc.data() as CertificateData });
+                    } else {
+                        setResult({ status: 'Not Verified' });
+                    }
+                } catch (error) {
+                    console.error('Verification error:', error);
+                    setResult({ error: 'Error during verification' });
+                }
+            };
             verifyToken();
         }
     }, [token]);
 
-    return (
-        <div>
-            <h1>Verification Result</h1>
-            {result && <pre>{JSON.stringify(result, null, 2)}</pre>}
-        </div>
-    );
+    if (result === null) {
+        return <div>Loading...</div>; // Show a loading message while fetching
+    }
+
+    if (result.error) {
+        return (
+            <div style={{ textAlign: 'center', padding: '20px', border: '1px solid red', backgroundColor: '#ffe6e6' }}>
+                <h1>Verification Result</h1>
+                <p style={{ color: 'red' }}>Error: {result.error}</p>
+            </div>
+        );
+    }
+
+    if (result.status === 'Not Verified') {
+        return (
+            <div style={{ textAlign: 'center', padding: '20px', border: '1px solid orange', backgroundColor: '#fff3e6' }}>
+                <h1>Verification Result</h1>
+                <p style={{ color: 'orange' }}>Certificate Not Verified</p>
+            </div>
+        );
+    }
+
+    if (result.status === 'Verified' && result.certificate) {
+        const certificate = result.certificate;
+        return (
+            <div style={{ textAlign: 'center', padding: '20px', border: '1px solid green', backgroundColor: '#e6ffe6', maxWidth: '600px', margin: '0 auto' }}>
+                <h1>Verification Result</h1>
+                <p style={{ color: 'green' }}>Certificate Verified</p>
+                <div style={{ textAlign: 'left', marginTop: '20px' }}>
+                    <p><strong>Name:</strong> {certificate.certificateType.name}</p>
+                    <p><strong>Internship Domain:</strong> {certificate.certificateType.internshipDomain}</p>
+                    <p><strong>Issued At:</strong> {new Date(certificate.issuedAt).toLocaleDateString()}</p>
+                    <p><strong>Expiry Date:</strong> {new Date(certificate.expiryDate).toLocaleDateString()}</p>
+                </div>
+            </div>
+        );
+    }
+
+    return null; // Handle any unexpected cases
 }
