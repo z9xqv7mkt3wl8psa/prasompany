@@ -44,22 +44,26 @@ export default function VerifyClient() {
             const db = getFirestore();
 
             const verifyToken = async () => {
-                try {
-                    const certificatesCollection = collection(db, 'certificates');
-                    const q = query(certificatesCollection, where('token', '==', token));
-                    const querySnapshot: QuerySnapshot = await getDocs(q);
+    try {
+        const certificatesCollection = collection(db, 'certificates');
+        const q = query(certificatesCollection, where('token', '==', token));
+        const querySnapshot: QuerySnapshot = await getDocs(q);
 
-                    if (!querySnapshot.empty) {
-                        const doc = querySnapshot.docs[0];
-                        setResult({ status: 'Verified', certificate: doc.data() as CertificateData });
-                    } else {
-                        setResult({ status: 'Not Verified' });
-                    }
-                } catch (error) {
-                    console.error('Verification error:', error);
-                    setResult({ error: 'Error during verification' });
-                }
-            };
+        console.log('Query Snapshot:', querySnapshot); // Log the query snapshot
+
+        if (!querySnapshot.empty) {
+            const doc = querySnapshot.docs[0];
+            console.log('Document Data:', doc.data()); // Log the document data
+            setResult({ status: 'Verified', certificate: doc.data() as CertificateData });
+        } else {
+            console.log('Document not found for token:', token); // Log when no document is found
+            setResult({ status: 'Not Verified' });
+        }
+    } catch (error) {
+        console.error('Verification error:', error);
+        setResult({ error: 'Error during verification' });
+    }
+};
             verifyToken();
         }
     }, [token]);
