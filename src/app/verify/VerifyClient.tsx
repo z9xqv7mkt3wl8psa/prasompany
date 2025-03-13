@@ -3,13 +3,16 @@
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { initializeApp, getApps } from 'firebase/app';
-import { getFirestore, doc, getDoc, DocumentSnapshot } from 'firebase/firestore';
+import { getFirestore, collection, query, where, getDocs, QuerySnapshot } from 'firebase/firestore'; // Import query, where, getDocs, QuerySnapshot
 
 interface CertificateData {
-    name: string;
-    issueDate: string;
-    certificateId: string;
-    // Add other fields and their types
+    certificateType: {
+        internshipDomain: string;
+        name: string;
+    };
+    expiryDate: string;
+    issuedAt: string;
+    token: string;
 }
 
 interface Result {
@@ -42,15 +45,18 @@ export default function VerifyClient() {
 
             const verifyToken = async () => {
                 try {
-                    const certificateDoc = doc(db, 'certificates', token);
-                    const certificateSnapshot: DocumentSnapshot = await getDoc(certificateDoc);
+                    const certificatesCollection = collection(db, 'certificates');
+                    const q = query(certificatesCollection, where('token', '==', token));
+                    const querySnapshot: QuerySnapshot = await getDocs(q);
 
-                    if (certificateSnapshot.exists()) {
-                        setResult({ status: 'Verified', certificate: certificateSnapshot.data() as CertificateData });
+                    if (!querySnapshot.empty) {
+                        const doc = querySnapshot.docs[0];
+                        setResult({ status: 'Verified', certificate: doc.data() as CertificateData });
                     } else {
                         setResult({ status: 'Not Verified' });
                     }
-                } catch {
+                } catch (error) {
+                    console.error('Verification error:', error);
                     setResult({ error: 'Error during verification' });
                 }
             };
