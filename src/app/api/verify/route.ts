@@ -8,7 +8,7 @@ const prisma = new PrismaClient({
 
 const SECRET_KEY = process.env.SECRET_KEY as string;
 
-if (!SECRET_KEY) {
+if (!SECRET_KEY) { 
   throw new Error('SECRET_KEY is not defined in the environment variables.');
 }
 
