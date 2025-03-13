@@ -31,7 +31,8 @@
 "tailwind-merge": "^3.0.1",
 "tailwindcss-animate": "^1.0.7",
 "jsonwebtoken": "^9.0.2",
-    "firebase": "^10.10.0" 
+"firebase": "^10.10.0",
+"firebase-admin": "^11.10.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
