@@ -40,7 +40,8 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'Certificate token is required.' }, { status: 400 });
     }
 
-    jwt.verify(token, SECRET_KEY);
+    // ✅ Type assertion to fix TypeScript error
+    jwt.verify(token, SECRET_KEY as string);
 
     const snapshot = await db
       .collection('certificates')
