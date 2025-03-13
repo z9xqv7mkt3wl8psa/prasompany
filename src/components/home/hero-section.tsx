@@ -57,7 +57,7 @@ const HeroSection = () => {
             providing IT services <br />
             and consulting to<br />grow your business.
           </div>
-          <Link href="/about" className="text-blue-400 font-semibold hover:underline">
+          <Link href="/Learnmore" className="text-blue-400 font-semibold hover:underline">
             Learn more →
           </Link>
         </div>
