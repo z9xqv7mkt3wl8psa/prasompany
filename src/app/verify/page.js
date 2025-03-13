@@ -41,7 +41,7 @@ export default function Verify() {
                     } else {
                         setResult({ status: 'Not Verified' });
                     }
-                } catch (err) { // eslint-disable-line no-unused-vars
+                } catch { // Corrected catch block
                     setResult({ error: 'Error during verification' });
                 }
             };
