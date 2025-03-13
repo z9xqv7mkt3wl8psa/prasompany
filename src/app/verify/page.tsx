@@ -33,21 +33,15 @@ function CertificateVerification() {
 
     async function fetchCertificate() {
       try {
-        console.log(`Fetching certificate with token: ${token}`);
-
         const res = await fetch(`/api/verify?token=${token}`);
         if (!res.ok) {
           const errorData = await res.json();
-          console.warn('API Error:', errorData);
           throw new Error(errorData.error || 'Failed to fetch certificate details.');
         }
 
         const data: Certificate = await res.json();
-        console.log('Fetched certificate data:', data);
-
         setCertificate(data);
       } catch (err) {
-        console.error('Error fetching certificate:', err);
         setError((err as Error).message);
       } finally {
         setLoading(false);
@@ -87,4 +81,3 @@ function CertificateVerification() {
     </div>
   );
 }
- 
