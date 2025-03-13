@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 
 interface Certificate {
   recipient: string;
-  course: string;
+  course: string; 
   issuedDate: string;
 }
 
