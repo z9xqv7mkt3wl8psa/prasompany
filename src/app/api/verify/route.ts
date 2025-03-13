@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getFirestore } from 'firebase-admin/firestore';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import admin from 'firebase-admin';
 
 if (!admin.apps.length) {
@@ -18,11 +18,6 @@ const SECRET_KEY = process.env.SECRET_KEY as string;
 
 if (!SECRET_KEY) {
   throw new Error('SECRET_KEY is not defined in the environment variables.');
-}
-
-interface DecodedToken extends JwtPayload {
-  userId: string;
-  certificateType: string;
 }
 
 export async function GET(req: Request) {
