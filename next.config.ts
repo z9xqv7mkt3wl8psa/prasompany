@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**', // Allows all external images (less secure)
+        hostname: '**', // Allows all external images (less secure) 
       },
     ],
   },
