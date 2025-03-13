@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import Navbar from "@/components/Header";
+
 
 const services = [
  { title: "Software Development", image: "/ssoftware.jpeg", description: "Custom software development, web and mobile application development, enterprise solutions, and SaaS platforms." },
@@ -64,7 +64,6 @@ export default function LearnMorePage() {
   <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
 
  
-   <Navbar />
   {/* Hero Section */}
   <section
     className="relative w-full h-[60vh] bg-cover bg-center flex items-center justify-center"
