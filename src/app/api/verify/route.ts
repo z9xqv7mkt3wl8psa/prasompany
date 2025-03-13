@@ -34,37 +34,27 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'Certificate token is required.' }, { status: 400 });
     }
 
-    // ✅ Verify JWT token
-    let decoded: DecodedToken;
-    try {
-      decoded = jwt.verify(token, SECRET_KEY) as DecodedToken;
-    } catch (err) {
-      console.error('JWT Verification Error:', err);
-      return NextResponse.json({ error: 'Invalid or expired token.' }, { status: 401 });
-    }
+    // ✅ Just verify the token without assigning it
+    jwt.verify(token, SECRET_KEY);
 
     // ✅ Firestore Query Improvement
-   const snapshot = await db
-  .collection('certificates')
-  .where('token', '==', token)
-  .get();
+    const snapshot = await db
+      .collection('certificates')
+      .where('token', '==', token)
+      .get();
 
-if (snapshot.empty) {
-  return NextResponse.json({ error: 'Certificate not found.' }, { status: 404 });
-}
+    if (snapshot.empty) {
+      return NextResponse.json({ error: 'Certificate not found.' }, { status: 404 });
+    }
 
-// ✅ Just verify the token without assigning it
-jwt.verify(token, SECRET_KEY) as DecodedToken;
+    const certificate = snapshot.docs[0].data();
 
-const certificate = snapshot.docs[0].data();
-
-return NextResponse.json({
-  message: 'Certificate is valid',
-  recipient: certificate.name || 'Unknown',
-  course: certificate.certificateType || 'Unknown',
-  issuedDate: certificate.issuedAt || null,
-});
-
+    return NextResponse.json({
+      message: 'Certificate is valid',
+      recipient: certificate.name || 'Unknown',
+      course: certificate.certificateType || 'Unknown',
+      issuedDate: certificate.issuedAt || null,
+    });
   } catch (error) {
     console.error('Internal Server Error:', error);
     return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
