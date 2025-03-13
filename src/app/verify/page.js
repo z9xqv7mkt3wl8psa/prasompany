@@ -41,7 +41,7 @@ export default function Verify() {
                     } else {
                         setResult({ status: 'Not Verified' });
                     }
-                } catch (error) {
+                } catch (_) {
                     setResult({ error: 'Error during verification' });
                 }
             };
