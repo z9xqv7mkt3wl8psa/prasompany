@@ -44,23 +44,27 @@ export async function GET(req: Request) {
     }
 
     // ✅ Firestore Query Improvement
-    const snapshot = await db
-      .collection('certificates')
-      .where('token', '==', token)
-      .get();
+   const snapshot = await db
+  .collection('certificates')
+  .where('token', '==', token)
+  .get();
 
-    if (snapshot.empty) {
-      return NextResponse.json({ error: 'Certificate not found.' }, { status: 404 });
-    }
+if (snapshot.empty) {
+  return NextResponse.json({ error: 'Certificate not found.' }, { status: 404 });
+}
 
-    const certificate = snapshot.docs[0].data();
+// ✅ Just verify the token without assigning it
+jwt.verify(token, SECRET_KEY) as DecodedToken;
 
-    return NextResponse.json({
-      message: 'Certificate is valid',
-      recipient: certificate.name || 'Unknown',
-      course: certificate.certificateType || 'Unknown',
-      issuedDate: certificate.issuedAt || null,
-    });
+const certificate = snapshot.docs[0].data();
+
+return NextResponse.json({
+  message: 'Certificate is valid',
+  recipient: certificate.name || 'Unknown',
+  course: certificate.certificateType || 'Unknown',
+  issuedDate: certificate.issuedAt || null,
+});
+
   } catch (error) {
     console.error('Internal Server Error:', error);
     return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
