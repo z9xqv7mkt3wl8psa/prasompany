@@ -14,6 +14,9 @@ interface CertificateData {
     expiryDate: string;
     token: string;
     internId: string;
+    teamId: string;
+    teamName: string;
+    userType: string;
 }
 
 interface Result {
@@ -97,6 +100,9 @@ export default function VerifyClient() {
                             <p><strong>Name:</strong> {result.certificate.certificateType.name}</p>
                             <p><strong>Internship Domain:</strong> {result.certificate.certificateType.internshipDomain}</p>
                             <p><strong>Intern ID:</strong> {result.certificate.internId}</p>
+                            <p><strong>Team ID:</strong> {result.certificate.teamId}</p>
+                            <p><strong>Team Name:</strong> {result.certificate.teamName}</p>
+                            <p><strong>User Type:</strong> {result.certificate.userType}</p>
                             <p><strong>Issued At:</strong> {new Date(result.certificate.issuedAt).toLocaleDateString()}</p>
                             <p><strong>Valid Until:</strong> {new Date(result.certificate.expiryDate).toLocaleDateString()}</p>
                         </div>
