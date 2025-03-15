@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { initializeApp, getApps } from 'firebase/app';
-import { getFirestore, collection, query, where, getDocs, QuerySnapshot } from 'firebase/firestore';
+import { getFirestore, collection, query, where, getDocs, QuerySnapshot, doc, getDoc } from 'firebase/firestore';
 
 interface CertificateData {
     certificateType: {
@@ -14,7 +14,7 @@ interface CertificateData {
     expiryDate: string;
     token: string;
     internId: string;
-    // Removed teamId, teamName, userType
+    assignedProject: string; // Add assignedProject to the interface
 }
 
 interface Result {
@@ -52,8 +52,21 @@ export default function VerifyClient() {
                     const querySnapshot: QuerySnapshot = await getDocs(q);
 
                     if (!querySnapshot.empty) {
-                        const doc = querySnapshot.docs[0];
-                        setResult({ status: 'Verified', certificate: doc.data() as CertificateData });
+                        const docSnapshot = querySnapshot.docs[0];
+                        const docData = docSnapshot.data();
+
+                        // Fetch assigned project.
+                        const certificateDocRef = doc(db, 'certificates', docSnapshot.id);
+                        const certificateDoc = await getDoc(certificateDocRef);
+                        const assignedProject = certificateDoc.data()?.assignedProject || 'Assigned Project Not Found';
+
+                        // Combine certificate data and assigned project.
+                        const certificateData: CertificateData = {
+                            ...docData as CertificateData,
+                            assignedProject: assignedProject,
+                        };
+
+                        setResult({ status: 'Verified', certificate: certificateData });
                     } else {
                         setResult({ status: 'Not Verified' });
                     }
@@ -100,6 +113,7 @@ export default function VerifyClient() {
                             <p><strong>Intern ID:</strong> {result.certificate.internId}</p>
                             <p><strong>Issued At:</strong> {new Date(result.certificate.issuedAt).toLocaleDateString()}</p>
                             <p><strong>Valid Until:</strong> {new Date(result.certificate.expiryDate).toLocaleDateString()}</p>
+                            <p><strong>Assigned Project:</strong> {result.certificate.assignedProject}</p>
                         </div>
                     </div>
                 )}
