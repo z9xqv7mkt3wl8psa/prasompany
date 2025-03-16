@@ -114,7 +114,7 @@ export function Navbar() {
                 href="/team"
                 className="block px-3 py-2 text-base font-semibold text-gray-700 tracking-wide hover:text-blue-500 hover:underline transition-all duration-300"
               >
-                Our Team
+                
               </Link>
             </div>
           </div>
