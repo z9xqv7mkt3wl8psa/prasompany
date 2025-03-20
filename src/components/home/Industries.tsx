@@ -7,12 +7,12 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 const Industries = () => {
   const industries = [
     { name: "Hi-Tech", icon: "⚙️" },
-    { name: "Insurance", icon: "🛡️" },
+    { name: "Travel, Transportation, Logistics & Hospitality", icon: "✈️" },
     { name: "Manufacturing", icon: "🏭" },
     { name: "Media & Entertainment", icon: "🎬" },
     { name: "Private Equity", icon: "💰" },
     { name: "Professional Services", icon: "📈" },
-    { name: "Travel, Logistics & Hospitality", icon: "✈️" },
+    { name: "Insurance", icon: "🛡️" },
     { name: "Retail & Consumer Goods", icon: "🛍️" },
     { name: "Banking & Financial Services", icon: "🏦" },
     { name: "Communications", icon: "📡" },
