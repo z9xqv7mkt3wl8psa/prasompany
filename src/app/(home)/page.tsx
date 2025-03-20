@@ -19,7 +19,7 @@ export default function Home() {
       <Navbar />
       <HeroSection />
 
-      <section className="relative w-full py-20 bg-gradient-to-br from-indigo-50 via-white to-indigo-100">
+    <section className="relative w-full py-20 bg-white">
         {/* Content Wrapper */}
         <div className="relative z-10 max-w-3xl mx-auto text-center px-6">
           {/* Main Motto */}
