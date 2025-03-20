@@ -56,7 +56,7 @@ const HeroSection = () => {
 
       {/* Content Wrapper */}
       <div className="relative z-10 flex flex-col md:flex-row h-screen w-full items-end md:items-center pb-20 px-6 md:px-20 text-center md:text-left">
-        {/* Left Side: Heading */}
+        {/* Left Side: Heading (Positioned Lower on Mobile) */}
         <div className="max-w-lg mb-6 md:mb-10 pt-16 sm:pt-20 md:pt-0">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
             Innovate, Scale, and Succeed <br />
