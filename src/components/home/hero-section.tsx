@@ -14,7 +14,7 @@ const backgroundData = [
     src: "/background2.jpg",
     title: "Accelerating Growth",
     content:
-      "Prasunet transforms complex challenges into innovative solutions, accelerating time to market. Our cutting-edge products impact industries like healthcare, transport, automotive, e-commerce, and more, driving business growth and success"
+      "Prasunet transforms complex challenges into innovative solutions, accelerating time to market. Our cutting-edge products impact industries like healthcare, transport, automotive, e-commerce, and more, driving business growth and success."
   },
   {
     src: "/background3.jpg",
@@ -30,7 +30,7 @@ const HeroSection = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % backgroundData.length);
-    },6000);
+    }, 6000);
 
     return () => clearInterval(interval);
   }, []);
@@ -57,9 +57,9 @@ const HeroSection = () => {
       {/* Content Wrapper */}
       <div className="relative z-10 flex flex-col md:flex-row h-screen w-full items-end md:items-center pb-20 px-6 md:px-20 text-center md:text-left">
         {/* Left Side: Heading */}
-        <div className="max-w-lg mb-6 md:mb-10">
+        <div className="max-w-lg mb-6 md:mb-10 pt-16 sm:pt-20 md:pt-0">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
-           Innovate, Scale, and Succeed  <br />
+            Innovate, Scale, and Succeed <br />
             <span className="bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent">
               With Prasunet IT Services
             </span>
