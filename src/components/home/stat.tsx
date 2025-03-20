@@ -1,5 +1,5 @@
 "use client";
-import { Globe, Gift, Users, Award } from "lucide-react";
+import { Globe, Gift, Award, Clock } from "lucide-react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import React from "react";
 
@@ -10,7 +10,7 @@ const Stats = () => {
   const rotateX = useTransform(y, [-50, 50], [15, -15]);
   const rotateY = useTransform(x, [-50, 50], [-15, 15]);
 
-  // Mouse movement handler with TypeScript type annotation
+  // Mouse movement handler
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const { innerWidth, innerHeight } = window;
     const { clientX, clientY } = e;
@@ -35,12 +35,12 @@ const Stats = () => {
 
       {/* Stats Content */}
       <div className="relative z-10 container mx-auto px-6 text-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
-        {/** Motion variants for staggered animation */}
+        {/* Motion variants for staggered animation */}
         {[
           { icon: Globe, color: "text-pink-400", value: "65+", label: "Global Presence" },
-          { icon: Gift, color: "text-blue-400", value: "150+", label: "Completed Projects" },
-          { icon: Users, color: "text-green-400", value: "200", label: "Happy Clients" },
-          { icon: Award, color: "text-yellow-400", value: "20", label: "Awards Received" },
+          { icon: Gift, color: "text-blue-400", value: "300+", label: "Project Solutions Delivered" },
+          { icon: Clock, color: "text-yellow-400", value: "24/7", label: "Global Operations Support" },
+          { icon: Award, color: "text-green-400", value: "5+ Years", label: "IT Excellence" },
         ].map((stat, index) => (
           <motion.div
             key={index}
