@@ -11,6 +11,7 @@ import RegisterSection from "@/components/home/register";
 import Services from "@/components/home/Services";
 import Stats from "@/components/home/stat";
 import Testimonials from "@/components/home/testimonail";
+import Industries from "@/components/home/Industries";
 
 export default function Home() {
   return (
@@ -45,6 +46,7 @@ export default function Home() {
       <Testimonials />
      
       <CareerSection />
+      <Industries/>
       <ClientSection />
       <RegisterSection />
       <FAQ />
