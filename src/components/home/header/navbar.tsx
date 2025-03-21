@@ -19,13 +19,9 @@ export function Navbar() {
           <div className="flex items-center gap-9">
             <Link href="/" className="flex items-center space-x-2">
               <Image src="/loggo.jpg" alt="Prasunet Logo" width={40} height={40} />
-              <span
-  className={`${dancingScript.className} text-lg font-bold tracking-widest text-gray-9000 drop-shadow-lg scale-x-125`}
->
-  PRASUNET
-</span>
-
-
+              <span className={`${dancingScript.className} text-lg font-bold tracking-widest text-gray-900 drop-shadow-lg scale-x-125`}>
+                PRASUNET
+              </span>
             </Link>
           </div>
 
@@ -59,6 +55,18 @@ export function Navbar() {
             </Link>
             <Link
               href="/business"
+              className="relative font-bold text-xl tracking-tight text-gray-700 transition-all duration-300 hover:text-blue-400 hover:underline underline-offset-8 decoration-2"
+            >
+              Business
+            </Link>
+            <Link
+              href="/program"
+              className="relative font-bold text-xl tracking-tight text-gray-700 transition-all duration-300 hover:text-blue-400 hover:underline underline-offset-8 decoration-2"
+            >
+              Program
+            </Link>
+            <Link
+              href="/contact"
               className="relative font-bold text-xl tracking-tight text-gray-700 transition-all duration-300 hover:text-blue-400 hover:underline underline-offset-8 decoration-2"
             >
               Contact
@@ -112,6 +120,20 @@ export function Navbar() {
               </Link>
               <Link
                 href="/business"
+                className="block px-3 py-2 text-base font-semibold text-gray-700 tracking-wide hover:text-blue-500 hover:underline transition-all duration-300"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Business
+              </Link>
+              <Link
+                href="/program"
+                className="block px-3 py-2 text-base font-semibold text-gray-700 tracking-wide hover:text-blue-500 hover:underline transition-all duration-300"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Program
+              </Link>
+              <Link
+                href="/contact"
                 className="block px-3 py-2 text-base font-semibold text-gray-700 tracking-wide hover:text-blue-500 hover:underline transition-all duration-300"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
