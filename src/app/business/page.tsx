@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import Navbar from "@/components/home/header/navbar";
+
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -76,9 +76,7 @@ const ContactUs = () => {
   };
 
   return (
-        <>
-      <Navbar />
-    </>
+    
     <div className="flex flex-col lg:flex-row items-center justify-between min-h-screen p-6 lg:p-20 bg-blue-100">
       {/* Left Form Section */}
       <div className="bg-white shadow-lg rounded-lg p-8 lg:w-1/2 w-full">
