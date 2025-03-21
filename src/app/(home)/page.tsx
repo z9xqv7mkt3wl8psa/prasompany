@@ -12,14 +12,21 @@ import Services from "@/components/home/Services";
 import Stats from "@/components/home/stat";
 import Testimonials from "@/components/home/testimonail";
 import Industries from "@/components/home/Industries";
+import Head from "next/head";
 
 export default function Home() {
   return (
     <div>
+      <Head>
+        <meta
+          name="google-site-verification"
+          content="KPS2C8xzbW49p8jLVO_ZQD1TCJYnrIgzhugk43awlcQ"
+        />
+      </Head>
       <Navbar />
       <HeroSection />
 
-    <section className="relative w-full py-20 bg-white">
+      <section className="relative w-full py-20 bg-white">
         {/* Content Wrapper */}
         <div className="relative z-10 max-w-3xl mx-auto text-center px-6">
           {/* Main Motto */}
@@ -37,16 +44,16 @@ export default function Home() {
           </p>
         </div>
       </section>
-      
+
       <Services />
       <Stats />
-      
+
       <Project />
       <InternshipSection />
       <Testimonials />
-     
+
       <CareerSection />
-      <Industries/>
+      <Industries />
       <ClientSection />
       <RegisterSection />
       <FAQ />
