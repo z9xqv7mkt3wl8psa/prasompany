@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Linkedin, Github } from "lucide-react";
 import Image from "next/image";
+import Navbar from "@/components/home/header/navbar";
 
 interface FormData {
   firstName: string;
@@ -157,6 +158,7 @@ const CareerApplicationForm = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 text-gray-900">
+      <Navbar />
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-3xl mx-auto">
           <div className="mb-8 w-screen -mx-[calc((100vw-100%)/2)] overflow-hidden relative">
