@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
+import Navbar from "@/components/home/header/navbar";
+import Footer from "@/components/home/footer-section";
 
 
 const services = [
@@ -62,7 +64,7 @@ export default function LearnMorePage() {
 
   return (
   <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
-
+<Navbar />
  
   {/* Hero Section */}
   <section
@@ -154,6 +156,7 @@ export default function LearnMorePage() {
           Contact Us
         </a>
       </section>
+      <Footer />
     </div>
   );
 }
