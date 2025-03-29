@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { PDFDocument } from "pdf-lib";
+import { getDocument } from "pdfjs-dist";
+import "pdfjs-dist/build/pdf.worker.entry";
 
 export default function Converter() {
   const [file, setFile] = useState<File | null>(null);
@@ -25,12 +26,13 @@ export default function Converter() {
       reader.onload = async () => {
         if (!reader.result) return;
 
-        const pdfDoc = await PDFDocument.load(reader.result as ArrayBuffer);
-        const pages = pdfDoc.getPages();
-
+        const pdf = await getDocument(new Uint8Array(reader.result as ArrayBuffer)).promise;
         let extractedText = "";
-        for (const page of pages) {
-          extractedText += page.getTextContent ? await page.getTextContent() : "\n";
+
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const textContent = await page.getTextContent();
+          extractedText += textContent.items.map((item: any) => item.str).join(" ") + "\n\n";
         }
 
         setOutputText(extractedText);
