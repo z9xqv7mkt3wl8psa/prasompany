@@ -32,7 +32,13 @@
 "tailwindcss-animate": "^1.0.7",
 "jsonwebtoken": "^9.0.2",
 "firebase": "^10.10.0",
-"firebase-admin": "^11.10.1"
+"firebase-admin": "^11.10.1",
+"pdf-lib": "^1.17.1",
+"mammoth": "^1.4.2",
+"file-saver": "^2.0.5",
+"@react-pdf-viewer/core": "^3.8.0",
+"@react-pdf-viewer/default-layout": "^3.8.0"
+
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
