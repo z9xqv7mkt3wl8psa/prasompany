@@ -26,7 +26,8 @@ export default function Converter() {
         if (!reader.result) return;
         const pdfDoc = await PDFDocument.load(new Uint8Array(reader.result as ArrayBuffer));
         const pages = await Promise.all(pdfDoc.getPages().map(page => page.getTextContent()));
-        const extractedText = pages.map(page => page.items.map(item => (item as any).str).join(" ")).join("\n\n");
+        const extractedText = pages.map(page => page.items.map(item => ("str" in item ? (item as { str: string }).str : "")).join(" ")).join("\n\n");
+
         setOutputText(extractedText);
       };
     } catch (error) {
