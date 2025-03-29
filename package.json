@@ -41,7 +41,9 @@
 "@react-pdf-viewer/default-layout": "^3.8.0",
 "react-dropzone": "^14.2.3",
 "pdf-lib": "^1.17.1",
-"pdf-parse": "^1.1.1"
+"pdf-parse": "^1.1.1",
+"pdfjs-dist": "^3.11.174",
+"file-saver": "^2.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
