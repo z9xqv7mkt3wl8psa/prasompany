@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Navbar from "@/components/home/header/navbar"; // Importing Navbar
+import Footer from "@/components/home/footer-section";
 
 const About = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -101,6 +102,7 @@ const About = () => {
             </button>
           </Link>
         </section>
+         <Footer />
       </div>
     </>
   );
