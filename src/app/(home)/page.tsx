@@ -16,6 +16,8 @@ import Testimonials from "@/components/home/testimonail";
 import Industries from "@/components/home/Industries";
 import Image from "next/image"; 
 import { useState } from "react";
+import Link from "next/link";
+
 
 export default function Home() {
   const [isHovered, setIsHovered] = useState(false);
@@ -86,9 +88,11 @@ export default function Home() {
               <span className="text-gray-800 font-semibold">Strategic Growth and Engagement.</span>
             </li>
           </ul>
-          <button className="mt-6 px-6 py-3 bg-[#3CAF58] text-white font-bold rounded-lg shadow-md hover:bg-green-700 transition">
-            Learn More →
-          </button>
+          <Link href="/learnmore">
+  <button className="mt-6 px-6 py-3 bg-[#3CAF58] text-white font-bold rounded-lg shadow-md hover:bg-green-700 transition">
+    Learn More →
+  </button>
+</Link>
         </div>
       </section>
 
