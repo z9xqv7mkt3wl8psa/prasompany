@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Navbar from "@/components/home/header/navbar"; // Import Navbar
+import Footer from "@/components/home/footer-section";
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -215,6 +216,7 @@ const ContactUs = () => {
             className="rounded-lg shadow-lg w-full h-auto" 
           />
         </div>
+         <Footer />
       </div>
     </>
   );
