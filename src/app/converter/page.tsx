@@ -2,8 +2,11 @@
 
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { getDocument } from "pdfjs-dist";
+import { getDocument, GlobalWorkerOptions } from "pdfjs-dist";
 import "pdfjs-dist/build/pdf.worker.entry";
+
+// Ensure PDF.js uses the correct worker in Next.js
+GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${"4.0.379"}/pdf.worker.min.js`;
 
 export default function Converter() {
   const [file, setFile] = useState<File | null>(null);
@@ -20,26 +23,37 @@ export default function Converter() {
 
   const extractText = async (file: File) => {
     setLoading(true);
+    setOutputText(null);
+
     try {
       const reader = new FileReader();
       reader.readAsArrayBuffer(file);
+
       reader.onload = async () => {
         if (!reader.result) return;
 
         const pdf = await getDocument(new Uint8Array(reader.result as ArrayBuffer)).promise;
-        let extractedText = "";
+        const pages = [];
 
         for (let i = 1; i <= pdf.numPages; i++) {
           const page = await pdf.getPage(i);
           const textContent = await page.getTextContent();
-          extractedText += textContent.items.map((item: any) => item.str).join(" ") + "\n\n";
+          pages.push(textContent);
         }
+
+        // ✅ Updated extraction logic (as per your request)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const extractedText = pages
+          .map((page) =>
+            page.items.map((item) => ("str" in item ? (item as { str: string }).str : "")).join(" ")
+          )
+          .join("\n\n");
 
         setOutputText(extractedText);
       };
     } catch (error) {
       console.error("Error extracting text:", error);
-      alert("Failed to extract text.");
+      alert("Failed to extract text. Please try another PDF.");
     } finally {
       setLoading(false);
     }
@@ -68,9 +82,9 @@ export default function Converter() {
       </button>
 
       {outputText && (
-        <div className="mt-4 p-4 bg-white rounded shadow">
+        <div className="mt-4 p-4 bg-white rounded shadow max-w-3xl">
           <h2 className="text-lg font-bold mb-2">Extracted Text:</h2>
-          <p className="text-gray-700 whitespace-pre-line">{outputText}</p>
+          <pre className="text-gray-700 whitespace-pre-wrap">{outputText}</pre>
         </div>
       )}
     </div>
