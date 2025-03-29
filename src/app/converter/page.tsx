@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { PDFDocument } from "pdf-lib";
+import * as pdfjsLib from "pdfjs-dist/build/pdf";
+import pdfWorker from "pdfjs-dist/build/pdf.worker.entry";
+import { saveAs } from "file-saver";
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 
 export default function Converter() {
   const [file, setFile] = useState<File | null>(null);
@@ -24,9 +28,15 @@ export default function Converter() {
       reader.readAsArrayBuffer(file);
       reader.onload = async () => {
         if (!reader.result) return;
-        const pdfDoc = await PDFDocument.load(new Uint8Array(reader.result as ArrayBuffer));
-        const pages = await Promise.all(pdfDoc.getPages().map(page => page.getTextContent()));
-        const extractedText = pages.map(page => page.items.map(item => ("str" in item ? (item as { str: string }).str : "")).join(" ")).join("\n\n");
+
+        const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(reader.result as ArrayBuffer) }).promise;
+        let extractedText = "";
+
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const textContent = await page.getTextContent();
+          extractedText += textContent.items.map(item => ("str" in item ? (item as { str: string }).str : "")).join(" ") + "\n\n";
+        }
 
         setOutputText(extractedText);
       };
@@ -36,6 +46,12 @@ export default function Converter() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const downloadAsDocx = () => {
+    if (!outputText) return;
+    const blob = new Blob([outputText], { type: "application/msword" });
+    saveAs(blob, "converted.docx");
   };
 
   return (
@@ -64,6 +80,13 @@ export default function Converter() {
         <div className="mt-4 p-4 bg-white rounded shadow">
           <h2 className="text-lg font-bold mb-2">Extracted Text:</h2>
           <p className="text-gray-700 whitespace-pre-line">{outputText}</p>
+
+          <button
+            onClick={downloadAsDocx}
+            className="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+          >
+            Download as DOCX
+          </button>
         </div>
       )}
     </div>
