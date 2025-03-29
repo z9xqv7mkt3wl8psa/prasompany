@@ -92,68 +92,57 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="w-full py-16 flex flex-col md:flex-row items-center justify-center gap-10 px-6 bg-gray-100 relative">
-        {/* Left: Text Content */}
-        <div className="w-full md:w-2/5 text-center md:text-left">
-          <p className="text-sm text-[#3CAF58] font-semibold uppercase">What We Do</p>
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-800 leading-tight mt-2">
-          Innovative IT Solutions for a Digital Future
-          </h2>
-          <p className="text-lg text-gray-700 mt-4">
-          we are dedicated to transforming businesses through innovative IT solutions, strategic consulting, and digital excellence. Our expertise empowers organizations to thrive in an ever-evolving digital landscape.</p>
-          <div className="mt-4 space-y-3 w-4/5 md:w-3/5">  
-          {[
-  { title: "Advanced IT Consulting", percentage: 98 },
-  { title: "Business Process Optimization", percentage: 93 },
-  { title: "Digital Transformation Strategies", percentage: 95 }
-].map((item, index) => (
-  <div key={index} className="relative mb-3">
-    <div className="flex justify-between">
-      <p className="text-gray-800 font-semibold">{item.title}</p>
-      {/* Percentage at the end of the progress bar */}
-      <span className="text-gray-800 font-semibold">{item.percentage}%</span>
+     {/* What We Do Section - Hidden on Mobile */}
+<div className="hidden md:block">
+  <section className="w-full py-16 flex flex-col md:flex-row items-center justify-center gap-10 px-6 bg-gray-100 relative">
+    {/* Left: Text Content */}
+    <div className="w-full md:w-2/5 text-center md:text-left">
+      <p className="text-sm text-[#3CAF58] font-semibold uppercase">What We Do</p>
+      <h2 className="text-3xl md:text-5xl font-bold text-gray-800 leading-tight mt-2">
+        Innovative IT Solutions for a Digital Future
+      </h2>
+      <p className="text-lg text-gray-700 mt-4">
+        We are dedicated to transforming businesses through innovative IT solutions, strategic consulting, and digital excellence. Our expertise empowers organizations to thrive in an ever-evolving digital landscape.
+      </p>
+      <div className="mt-4 space-y-3 w-4/5 md:w-3/5">
+        {[
+          { title: "Advanced IT Consulting", percentage: 98 },
+          { title: "Business Process Optimization", percentage: 93 },
+          { title: "Digital Transformation Strategies", percentage: 95 }
+        ].map((item, index) => (
+          <div key={index} className="relative mb-3">
+            <div className="flex justify-between">
+              <p className="text-gray-800 font-semibold">{item.title}</p>
+              <span className="text-gray-800 font-semibold">{item.percentage}%</span>
+            </div>
+            <div className="relative w-full bg-gray-300 rounded-full h-2.5 mt-1">
+              <div className="bg-[#3CAF58] h-2.5 rounded-full" style={{ width: `${item.percentage}%` }}></div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
-    <div className="relative w-full bg-gray-300 rounded-full h-2.5 mt-1">
-      {/* Progress Bar */}
-      <div
-        className="bg-[#3CAF58] h-2.5 rounded-full"
-        style={{ width: `${item.percentage}%` }}
-      ></div>
+    
+    {/* Right: Background Image */}
+    <div className="relative w-full md:w-2/5 flex justify-end">
+      <div className="relative w-[450px] h-[400px] md:w-[450px] md:h-[500px] overflow-hidden rounded-lg shadow-lg">
+        <Image 
+          src="/imagewhatwedo.jpg" 
+          alt="Campaign Success"
+          layout="fill"
+          objectFit="cover"
+          className="rounded-lg"
+        />
+      </div>
+      <div className="absolute left-0 md:-left-30 top-1/2 transform -translate-y-1/2 w-[260px] h-[260px] md:w-[280px] md:h-[280px] rounded-full overflow-hidden border-4 border-white shadow-xl">
+        <video autoPlay loop muted className="w-full h-full object-cover rounded-full">
+          <source src="/video1.mp4" type="video/mp4" />
+        </video>
+      </div>
     </div>
-  </div>
-))}
-
+  </section>
 </div>
 
-</div> 
-        {/* Left: Background Image */}
-<div className="relative w-full md:w-2/5 flex justify-end">
-  
-  {/* Wrapper div for better positioning */}
-  <div className="relative w-[450px] h-[400px] md:w-[450px] md:h-[500px] overflow-hidden rounded-lg shadow-lg">
-    {/* Background Image */}
-  <div className="relative w-[450px] h-[400px] md:w-[450px] md:h-[500px] overflow-hidden rounded-lg shadow-lg">
-    <Image 
-      src="/imagewhatwedo.jpg" 
-      alt="Campaign Success"
-      layout="fill"
-      objectFit="cover"
-      className="rounded-lg"
-    />
-  </div>
-</div>
-  {/* Circular Video Overlay - Positioned Fully on the Left */}
- <div className="absolute left-0 md:-left-30 top-1/2 transform -translate-y-1/2 w-[260px] h-[260px] md:w-[280px] md:h-[280px] rounded-full overflow-hidden border-4 border-white shadow-xl">
-  <video autoPlay loop muted className="w-full h-full object-cover rounded-full">
-      <source src="/video1.mp4" type="video/mp4" />
-    </video>
-  </div>
-
-</div>
-
-      </section>
-
-         
       
       <Services />
       <Stats />
