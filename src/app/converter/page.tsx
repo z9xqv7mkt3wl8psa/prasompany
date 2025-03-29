@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import pdfParse from "pdf-parse";
 import { PDFDocument } from "pdf-lib";
 import mammoth from "mammoth";
 import { saveAs } from "file-saver";
@@ -24,8 +25,8 @@ export default function Converter() {
 
     try {
       const arrayBuffer = await file.arrayBuffer();
-      const pdfDoc = await PDFDocument.load(arrayBuffer);
-      const text = await pdfDoc.getText(); // Extracts text but doesn't preserve formatting
+      const textData = await pdfParse(Buffer.from(arrayBuffer));
+      const text = textData.text; // Extracted text
 
       const docBlob = new Blob([text], { type: "application/msword" });
       saveAs(docBlob, "converted.docx");
@@ -43,7 +44,8 @@ export default function Converter() {
 
     try {
       const arrayBuffer = await file.arrayBuffer();
-      const { value: text } = await mammoth.extractRawText({ arrayBuffer });
+      const result = await mammoth.extractRawText({ arrayBuffer });
+      const text = result.value; // Extracted text from DOCX
 
       const pdfDoc = await PDFDocument.create();
       const page = pdfDoc.addPage([600, 800]);
