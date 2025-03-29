@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Linkedin, Github } from "lucide-react";
 import Image from "next/image";
 import Navbar from "@/components/home/header/navbar";
+import Footer from "@/components/home/footer-section";
 
 interface FormData {
   firstName: string;
@@ -412,6 +413,7 @@ const CareerApplicationForm = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
