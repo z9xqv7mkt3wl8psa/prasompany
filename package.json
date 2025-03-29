@@ -37,8 +37,8 @@
 "mammoth": "^1.4.2",
 "file-saver": "^2.0.5",
 "@react-pdf-viewer/core": "^3.8.0",
-"@react-pdf-viewer/default-layout": "^3.8.0"
-
+"@react-pdf-viewer/default-layout": "^3.8.0",
+"react-dropzone": "^14.2.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
