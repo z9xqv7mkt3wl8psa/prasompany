@@ -55,7 +55,7 @@ const About = () => {
 
           {/* Video with Centered Play Button */}
           <div className="relative lg:flex items-center w-full lg:w-6/12">
-            <video id="company-video" className="w-full rounded-lg shadow-lg" src="/video.mp4" controls />
+            <video id="company-video" className="w-full rounded-lg shadow-lg" src="/video2.mp4" controls />
             {!isPlaying && (
             <button
             onClick={handlePlay}
