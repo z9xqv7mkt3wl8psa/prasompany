@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Navbar from "@/components/home/header/navbar";
- // Import the Navbar
+import Footer from "@/components/home/footer-section";
 
 export default function ProgramPage() {
   return (
@@ -91,6 +91,7 @@ export default function ProgramPage() {
           </motion.div>
         </div>
       </div>
+     <Footer />
     </div>
   );
 }
