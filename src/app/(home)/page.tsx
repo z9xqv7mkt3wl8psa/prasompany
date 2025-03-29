@@ -88,7 +88,7 @@ export default function Home() {
               <span className="text-gray-800 font-semibold">Strategic Growth and Engagement.</span>
             </li>
           </ul>
-          <Link href="/learnmore">
+          <Link href="/Learnmore">
   <button className="mt-6 px-6 py-3 bg-[#3CAF58] text-white font-bold rounded-lg shadow-md hover:bg-green-700 transition">
     Learn More →
   </button>
