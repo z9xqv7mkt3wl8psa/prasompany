@@ -216,8 +216,9 @@ const ContactUs = () => {
             className="rounded-lg shadow-lg w-full h-auto" 
           />
         </div>
-         <Footer />
+         
       </div>
+       <Footer />
     </>
   );
 };
