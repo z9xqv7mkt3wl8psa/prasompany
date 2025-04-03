@@ -1,43 +1,36 @@
-"use client";
 import React from "react";
 import Navbar from "@/components/home/header/navbar";
 import Footer from "@/components/home/footer-section";
 
-interface ServiceCardProps {
-  image: string;
-  title: string;
-  description: string;
-}
-
-const services: ServiceCardProps[] = [
+const services = [
   {
-    image: "/network-security.jpg",
     title: "Network Security",
+    image: "/network-security.jpg",
     description: "Protect your infrastructure with advanced firewall and intrusion detection systems.",
   },
   {
-    image: "/data-encryption.jpg",
     title: "Data Encryption",
+    image: "/data-encryption.jpg",
     description: "Secure sensitive data with industry-leading encryption standards.",
   },
   {
-    image: "/risk-management.jpg",
     title: "Risk Management",
+    image: "/risk-management.jpg",
     description: "Identify vulnerabilities and mitigate security risks efficiently.",
   },
   {
-    image: "/security-audit.jpg",
     title: "Security Audits",
+    image: "/security-audit.jpg",
     description: "Comprehensive assessments to ensure compliance and security.",
   },
   {
-    image: "/cyber-threat.jpg",
     title: "Cyber Threat Monitoring",
+    image: "/cyber-threat.jpg",
     description: "Continuous monitoring for potential threats and breaches.",
   },
 ];
 
-function ServiceCard({ image, title, description }: ServiceCardProps) {
+function ServiceCard({ image, title, description }) {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md text-center transition hover:shadow-lg">
       <img src={image} alt={title} className="w-full h-48 object-cover rounded-md mb-4" />
@@ -52,15 +45,21 @@ export default function CyberSecurityPage() {
     <div className="bg-gray-100 min-h-screen flex flex-col">
       <Navbar />
 
-      {/* Hero Section with Cyber Security Banner */}
-      <header className="relative w-full bg-cover bg-center h-[500px]" style={{ backgroundImage: "url('/cybersecurity-banner.jpg')" }}>
+      {/* Hero Section */}
+      <header
+        className="relative w-full bg-cover bg-center h-[500px]"
+        style={{ backgroundImage: "url('/images/cybersecurity-banner.jpg')" }}
+      >
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-white text-center px-6">
           <h1 className="text-5xl font-bold">Cybersecurity Solutions</h1>
           <p className="mt-4 text-lg max-w-2xl">
             Safeguard your business with our cutting-edge cybersecurity services, ensuring data protection and risk management.
           </p>
-          <a href="/contact" className="mt-6 inline-block bg-blue-600 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition">
+          <a
+            href="/contact"
+            className="mt-6 inline-block bg-blue-600 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition"
+          >
             Get a Consultation
           </a>
         </div>
@@ -86,7 +85,10 @@ export default function CyberSecurityPage() {
         <p className="mt-4 text-lg max-w-2xl mx-auto">
           Partner with us for reliable cybersecurity solutions tailored to your needs.
         </p>
-        <a href="/contact" className="mt-6 inline-block bg-white text-blue-600 px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-200 transition">
+        <a
+          href="/contact"
+          className="mt-6 inline-block bg-white text-blue-600 px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-200 transition"
+        >
           Contact Us
         </a>
       </section>
