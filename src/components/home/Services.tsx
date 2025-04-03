@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 const services = [
- [
   { "title": "Software Development", "image": "/ssoftware.jpeg", "description": "Custom software development, web and mobile application development, enterprise solutions, and SaaS platforms." },
   { "title": "IT Consulting & Strategy", "image": "/sITconsulting.jpeg", "description": "Expert consulting for IT infrastructure, digital transformation, automation, and project management." },
   { "title": "E-commerce Solutions", "image": "/secommerce.jpg", "description": "Build powerful online stores with secure payments, inventory management, and more." },
