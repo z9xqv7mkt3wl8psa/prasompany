@@ -1,0 +1,122 @@
+'use client';
+
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { initializeApp, getApps } from 'firebase/app';
+import { getFirestore, collection, query, where, getDocs, QuerySnapshot } from 'firebase/firestore';
+
+interface StudentInfo {
+    name: string;
+    internId: string;
+    domain: string;
+}
+
+interface FeedbackDetails {
+    whatWentWell: string;
+    areasOfImprovement: string;
+    professionalRemarks: string;
+}
+
+interface FeedbackData {
+    studentInfo: StudentInfo;
+    feedbackDetails: FeedbackDetails;
+    issuedAt: string;
+    token: string;
+}
+
+interface Result {
+    status?: string;
+    error?: string;
+    feedback?: FeedbackData;
+}
+
+const firebaseConfig = {
+    apiKey: "AIzaSyA_XvAPygXMMMddn7NsqsogzDpM-FXDgeI",
+    authDomain: "cert-final-c1409.firebaseapp.com",
+    projectId: "cert-final-c1409",
+    storageBucket: "cert-final-c1409.firebasestorage.app",
+    messagingSenderId: "948127703754",
+    appId: "1:948127703754:web:03289910ff99fb33ee4a33",
+    measurementId: "G-PBNBSHK135"
+};
+
+export default function FeedbackClient() {
+    const searchParams = useSearchParams();
+    const token = searchParams.get('token');
+    const [result, setResult] = useState<Result | null>(null);
+
+    useEffect(() => {
+        if (token) {
+            if (getApps().length === 0) {
+                initializeApp(firebaseConfig);
+            }
+            const db = getFirestore();
+
+            const verifyToken = async () => {
+                try {
+                    const feedbackCollection = collection(db, 'feedback');
+                    const q = query(feedbackCollection, where('token', '==', token));
+                    const querySnapshot: QuerySnapshot = await getDocs(q);
+
+                    if (!querySnapshot.empty) {
+                        const docSnapshot = querySnapshot.docs[0];
+                        const docData = docSnapshot.data() as FeedbackData;
+
+                        setResult({ status: 'Verified', feedback: docData });
+                    } else {
+                        setResult({ status: 'Not Verified' });
+                    }
+                } catch (error) {
+                    console.error('Verification error:', error);
+                    setResult({ error: 'Error during verification' });
+                }
+            };
+            verifyToken();
+        }
+    }, [token]);
+
+    return (
+        <div style={{ fontFamily: 'Arial, sans-serif' }}>
+            <header style={{ textAlign: 'center', padding: '20px', backgroundColor: '#f0f0f0', marginBottom: '20px' }}>
+                <h1 style={{ margin: '0', color: '#333' }}>Prasunet Company</h1>
+                <p style={{ margin: '5px 0', color: '#666', fontStyle: 'italic' }}>Tech Bharat, Global Impact.</p>
+            </header>
+
+            <div style={{ maxWidth: '600px', margin: '0 auto', padding: '0 20px' }}>
+                {result === null && <div>Loading...</div>}
+
+                {result?.error && (
+                    <div style={{ textAlign: 'center', padding: '20px', border: '1px solid red', backgroundColor: '#ffe6e6' }}>
+                        <h1>Feedback Verification</h1>
+                        <p style={{ color: 'red' }}>Error: {result.error}</p>
+                    </div>
+                )}
+
+                {result?.status === 'Not Verified' && (
+                    <div style={{ textAlign: 'center', padding: '20px', border: '1px solid orange', backgroundColor: '#fff3e6' }}>
+                        <h1>Feedback Verification</h1>
+                        <p style={{ color: 'orange' }}>Feedback Not Found</p>
+                    </div>
+                )}
+
+                {result?.status === 'Verified' && result.feedback && (
+                    <div style={{ textAlign: 'center', padding: '20px', border: '1px solid green', backgroundColor: '#e6ffe6' }}>
+                        <h1>Feedback Verification</h1>
+                        <div style={{ textAlign: 'left', marginTop: '20px' }}>
+                            <p><strong>Name:</strong> {result.feedback.studentInfo.name}</p>
+                            <p><strong>Intern ID:</strong> {result.feedback.studentInfo.internId}</p>
+                            <p><strong>Domain:</strong> {result.feedback.studentInfo.domain}</p>
+                            <hr />
+                            <h3>Feedback Summary</h3>
+                            <p><strong>What Went Well:</strong> {result.feedback.feedbackDetails.whatWentWell}</p>
+                            <p><strong>Areas of Improvement:</strong> {result.feedback.feedbackDetails.areasOfImprovement}</p>
+                            <p><strong>Professional Remarks:</strong> {result.feedback.feedbackDetails.professionalRemarks}</p>
+                            <hr />
+                            <p><strong>Issued At:</strong> {new Date(result.feedback.issuedAt).toLocaleDateString()}</p>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
