@@ -48,9 +48,12 @@ export default function FeedbackClient() {
                     const q = query(feedbackCollection, where('token', '==', token));
                     const querySnapshot: QuerySnapshot = await getDocs(q);
 
+                    console.log('Query Snapshot:', querySnapshot);
+
                     if (!querySnapshot.empty) {
                         const docSnapshot = querySnapshot.docs[0];
                         const docData = docSnapshot.data() as FeedbackData;
+                        console.log('Feedback Data:', docData);
                         setResult({ status: 'Found', feedback: docData });
                     } else {
                         setResult({ status: 'Not Found' });
