@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { initializeApp, getApps } from 'firebase/app';
-import { getFirestore, collection, query, where, getDocs, QuerySnapshot } from 'firebase/firestore';
+import { getFirestore, collection, query, where, getDocs, QuerySnapshot, doc, getDoc } from 'firebase/firestore';
 import Image from 'next/image';
 import loggo from './loggo.jpg';
 
@@ -16,10 +16,24 @@ interface FeedbackData {
     token: string;
 }
 
+interface CertificateData {
+    certificateType: {
+        internshipDomain: string;
+        name: string;
+    };
+    issuedAt: string;
+    expiryDate: string;
+    token: string;
+    internId: string;
+    assignedProject: string;
+}
+
 interface Result {
     status?: string;
     error?: string;
     feedback?: FeedbackData;
+    certificate?: CertificateData;
+    mode?: 'feedback' | 'certificate';
 }
 
 const firebaseConfig = {
@@ -32,7 +46,7 @@ const firebaseConfig = {
     measurementId: "G-PBNBSHK135"
 };
 
-export default function FeedbackClient() {
+export default function CombinedVerification() {
     const searchParams = useSearchParams();
     const token = searchParams.get('token');
     const [result, setResult] = useState<Result | null>(null);
@@ -44,25 +58,61 @@ export default function FeedbackClient() {
             }
             const db = getFirestore();
 
-            const fetchFeedback = async () => {
+            const fetchData = async () => {
                 try {
+                    // First try to fetch feedback
                     const feedbackCollection = collection(db, 'feedback');
-                    const q = query(feedbackCollection, where('token', '==', token));
-                    const querySnapshot: QuerySnapshot = await getDocs(q);
+                    const feedbackQuery = query(feedbackCollection, where('token', '==', token));
+                    const feedbackSnapshot = await getDocs(feedbackQuery);
 
-                    if (!querySnapshot.empty) {
-                        const docSnapshot = querySnapshot.docs[0];
+                    if (!feedbackSnapshot.empty) {
+                        const docSnapshot = feedbackSnapshot.docs[0];
                         const docData = docSnapshot.data() as FeedbackData;
-                        setResult({ status: 'Found', feedback: docData });
-                    } else {
-                        setResult({ status: 'Not Found' });
+                        setResult({ 
+                            status: 'Found', 
+                            feedback: docData,
+                            mode: 'feedback'
+                        });
+                        return;
                     }
+
+                    // If no feedback found, try to verify certificate
+                    const certificatesCollection = collection(db, 'certificates');
+                    const certQuery = query(certificatesCollection, where('token', '==', token));
+                    const certSnapshot = await getDocs(certQuery);
+
+                    if (!certSnapshot.empty) {
+                        const docSnapshot = certSnapshot.docs[0];
+                        const docData = docSnapshot.data();
+                        
+                        // Fetch assigned project
+                        const certificateDocRef = doc(db, 'certificates', docSnapshot.id);
+                        const certificateDoc = await getDoc(certificateDocRef);
+                        const assignedProject = certificateDoc.data()?.assignedProject || 'Assigned Project Not Found';
+
+                        const certificateData: CertificateData = {
+                            ...docData as CertificateData,
+                            assignedProject: assignedProject,
+                        };
+
+                        setResult({ 
+                            status: 'Verified', 
+                            certificate: certificateData,
+                            mode: 'certificate'
+                        });
+                        return;
+                    }
+
+                    // If neither found
+                    setResult({ status: 'Not Found' });
+
                 } catch (error) {
-                    console.error('Feedback fetch error:', error);
-                    setResult({ error: 'Error fetching feedback' });
+                    console.error('Data fetch error:', error);
+                    setResult({ error: 'Error fetching data' });
                 }
             };
-            fetchFeedback();
+
+            fetchData();
         }
     }, [token]);
 
@@ -138,7 +188,7 @@ export default function FeedbackClient() {
                             animation: 'spin 1s linear infinite',
                             margin: '0 auto 20px'
                         }}></div>
-                        <p>Loading your feedback...</p>
+                        <p>Loading data...</p>
                     </div>
                 )}
 
@@ -163,12 +213,12 @@ export default function FeedbackClient() {
                         borderRadius: '8px',
                         marginBottom: '30px'
                     }}>
-                        <h2 style={{ color: '#f39c12', marginTop: 0 }}>Feedback Not Found</h2>
-                        <p style={{ color: '#f39c12' }}>The feedback you&apos;re looking for doesn&apos;t exist or may have been removed.</p>
+                        <h2 style={{ color: '#f39c12', marginTop: 0 }}>Not Found</h2>
+                        <p style={{ color: '#f39c12' }}>No feedback or certificate found with this token.</p>
                     </div>
                 )}
 
-                {result?.status === 'Found' && result.feedback && (
+                {result?.mode === 'feedback' && result?.status === 'Found' && result.feedback && (
                     <div style={{ 
                         padding: '25px', 
                         border: '1px solid #2ecc71', 
@@ -197,6 +247,42 @@ export default function FeedbackClient() {
                             
                             <p style={{ fontWeight: '600', color: '#2c3e50' }}>Professional Development:</p>
                             <p style={{ whiteSpace: 'pre-line' }}>{result.feedback.professionalDevelopment}</p>
+                        </div>
+                    </div>
+                )}
+
+                {result?.mode === 'certificate' && result?.status === 'Verified' && result.certificate && (
+                    <div style={{ 
+                        padding: '25px', 
+                        border: '1px solid #2ecc71', 
+                        backgroundColor: '#e8f8f5',
+                        borderRadius: '8px',
+                        marginBottom: '30px'
+                    }}>
+                        <h2 style={{ color: '#27ae60', marginTop: 0 }}>Certificate Verified</h2>
+                        <div style={{ 
+                            display: 'grid',
+                            gridTemplateColumns: '150px 1fr',
+                            gap: '15px',
+                            marginTop: '20px'
+                        }}>
+                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Name:</p>
+                            <p>{result.certificate.certificateType.name}</p>
+                            
+                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Internship Domain:</p>
+                            <p>{result.certificate.certificateType.internshipDomain}</p>
+                            
+                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Intern ID:</p>
+                            <p>{result.certificate.internId}</p>
+                            
+                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Issued At:</p>
+                            <p>{new Date(result.certificate.issuedAt).toLocaleDateString()}</p>
+                            
+                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Valid Until:</p>
+                            <p>{new Date(result.certificate.expiryDate).toLocaleDateString()}</p>
+                            
+                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Assigned Project:</p>
+                            <p>{result.certificate.assignedProject}</p>
                         </div>
                     </div>
                 )}
