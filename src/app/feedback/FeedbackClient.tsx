@@ -4,6 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore, collection, query, where, getDocs, QuerySnapshot } from 'firebase/firestore';
+import Image from 'next/image';
 
 interface FeedbackData {
     name: string;
@@ -83,12 +84,12 @@ export default function FeedbackClient() {
                     justifyContent: 'center',
                     marginBottom: '15px'
                 }}>
-                    <img 
+                    <Image 
                         src="/logo.jpg" 
                         alt="Prasunet Logo" 
+                        width={80}
+                        height={80}
                         style={{ 
-                            width: '80px', 
-                            height: '80px',
                             borderRadius: '50%',
                             objectFit: 'cover',
                             marginRight: '15px'
@@ -162,7 +163,7 @@ export default function FeedbackClient() {
                         marginBottom: '30px'
                     }}>
                         <h2 style={{ color: '#f39c12', marginTop: 0 }}>Feedback Not Found</h2>
-                        <p style={{ color: '#f39c12' }}>The feedback you're looking for doesn't exist or may have been removed.</p>
+                        <p style={{ color: '#f39c12' }}>The feedback you&apos;re looking for doesn&apos;t exist or may have been removed.</p>
                     </div>
                 )}
 
@@ -227,7 +228,7 @@ export default function FeedbackClient() {
                         gap: '15px',
                         textAlign: 'center'
                     }}>
-                        <a href="https://discord.gg/WFfj5XCA" target="_blank" style={{ 
+                        <a href="https://discord.gg/WFfj5XCA" target="_blank" rel="noopener noreferrer" style={{ 
                             textDecoration: 'none',
                             padding: '12px',
                             backgroundColor: '#7289da',
@@ -238,7 +239,7 @@ export default function FeedbackClient() {
                         }}>
                             Discord
                         </a>
-                        <a href="https://www.linkedin.com/company/prasunet-company/" target="_blank" style={{ 
+                        <a href="https://www.linkedin.com/company/prasunet-company/" target="_blank" rel="noopener noreferrer" style={{ 
                             textDecoration: 'none',
                             padding: '12px',
                             backgroundColor: '#0077b5',
@@ -249,7 +250,7 @@ export default function FeedbackClient() {
                         }}>
                             LinkedIn
                         </a>
-                        <a href="https://t.me/+gguS8Aty2K5lOTM1" target="_blank" style={{ 
+                        <a href="https://t.me/+gguS8Aty2K5lOTM1" target="_blank" rel="noopener noreferrer" style={{ 
                             textDecoration: 'none',
                             padding: '12px',
                             backgroundColor: '#0088cc',
@@ -260,7 +261,7 @@ export default function FeedbackClient() {
                         }}>
                             Telegram
                         </a>
-                        <a href="https://whatsapp.com/channel/0029VbA5wvY4NVin6VvF3U2Q" target="_blank" style={{ 
+                        <a href="https://whatsapp.com/channel/0029VbA5wvY4NVin6VvF3U2Q" target="_blank" rel="noopener noreferrer" style={{ 
                             textDecoration: 'none',
                             padding: '12px',
                             backgroundColor: '#25D366',
