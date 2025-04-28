@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore, collection, query, where, getDocs, QuerySnapshot } from 'firebase/firestore';
 import Image from 'next/image';
+import loggo from './loggo.jpg';
 
 interface FeedbackData {
     name: string;
@@ -85,7 +86,7 @@ export default function FeedbackClient() {
                     marginBottom: '15px'
                 }}>
                     <Image 
-                        src="/logo.jpg" 
+                        src={loggo}
                         alt="Prasunet Logo" 
                         width={80}
                         height={80}
