@@ -65,68 +65,226 @@ export default function FeedbackClient() {
     }, [token]);
 
     return (
-        <div style={{ fontFamily: 'Arial, sans-serif', textAlign: 'center' }}>
-            <header style={{ padding: '20px', backgroundColor: '#f0f0f0', marginBottom: '20px' }}>
-                <img src="/logo.jpg" alt="Prasunet Logo" style={{ width: '150px', marginBottom: '10px' }} />
-                <h1 style={{ color: '#333' }}>Prasunet Company</h1>
-                <p style={{ color: '#666', fontStyle: 'italic' }}>Tech Bharat, Global Impact</p>
+        <div style={{ 
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif", 
+            minHeight: '100vh',
+            backgroundColor: '#f9f9f9'
+        }}>
+            <header style={{ 
+                padding: '20px', 
+                backgroundColor: '#ffffff',
+                boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                marginBottom: '30px',
+                textAlign: 'center'
+            }}>
+                <div style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    marginBottom: '15px'
+                }}>
+                    <img 
+                        src="/logo.jpg" 
+                        alt="Prasunet Logo" 
+                        style={{ 
+                            width: '80px', 
+                            height: '80px',
+                            borderRadius: '50%',
+                            objectFit: 'cover',
+                            marginRight: '15px'
+                        }} 
+                    />
+                    <div>
+                        <h1 style={{ 
+                            color: '#2c3e50', 
+                            margin: 0,
+                            fontSize: '28px',
+                            fontWeight: '600'
+                        }}>
+                            Prasunet Company
+                        </h1>
+                        <p style={{ 
+                            color: '#3498db', 
+                            margin: '5px 0 0',
+                            fontSize: '16px',
+                            fontStyle: 'italic',
+                            fontWeight: '500'
+                        }}>
+                            Tech Bharat, Global Impact
+                        </p>
+                    </div>
+                </div>
             </header>
 
-            <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 20px' }}>
-                {result === null && <div>Loading...</div>}
+            <div style={{ 
+                maxWidth: '800px', 
+                margin: '0 auto', 
+                padding: '0 20px 40px'
+            }}>
+                {result === null && (
+                    <div style={{
+                        padding: '30px',
+                        textAlign: 'center',
+                        color: '#7f8c8d'
+                    }}>
+                        <div className="spinner" style={{
+                            border: '4px solid rgba(0, 0, 0, 0.1)',
+                            width: '36px',
+                            height: '36px',
+                            borderRadius: '50%',
+                            borderLeftColor: '#3498db',
+                            animation: 'spin 1s linear infinite',
+                            margin: '0 auto 20px'
+                        }}></div>
+                        <p>Loading your feedback...</p>
+                    </div>
+                )}
 
                 {result?.error && (
-                    <div style={{ padding: '20px', border: '1px solid red', backgroundColor: '#ffe6e6' }}>
-                        <h2>Feedback Result</h2>
-                        <p style={{ color: 'red' }}>Error: {result.error}</p>
+                    <div style={{ 
+                        padding: '25px', 
+                        border: '1px solid #e74c3c', 
+                        backgroundColor: '#fdedec',
+                        borderRadius: '8px',
+                        marginBottom: '30px'
+                    }}>
+                        <h2 style={{ color: '#e74c3c', marginTop: 0 }}>Error</h2>
+                        <p style={{ color: '#e74c3c' }}>{result.error}</p>
                     </div>
                 )}
 
                 {result?.status === 'Not Found' && (
-                    <div style={{ padding: '20px', border: '1px solid orange', backgroundColor: '#fff3e6' }}>
-                        <h2>Feedback Result</h2>
-                        <p style={{ color: 'orange' }}>Feedback Not Found</p>
+                    <div style={{ 
+                        padding: '25px', 
+                        border: '1px solid #f39c12', 
+                        backgroundColor: '#fef5e7',
+                        borderRadius: '8px',
+                        marginBottom: '30px'
+                    }}>
+                        <h2 style={{ color: '#f39c12', marginTop: 0 }}>Feedback Not Found</h2>
+                        <p style={{ color: '#f39c12' }}>The feedback you're looking for doesn't exist or may have been removed.</p>
                     </div>
                 )}
 
                 {result?.status === 'Found' && result.feedback && (
-                    <div style={{ padding: '20px', border: '1px solid green', backgroundColor: '#e6ffe6' }}>
-                        <h2>Feedback Result</h2>
-                        <p><strong>Name:</strong> {result.feedback.name}</p>
-                        <p><strong>Intern ID:</strong> {result.feedback.internId}</p>
-                        <p><strong>Strengths:</strong> {result.feedback.strengths}</p>
-                        <p><strong>Areas of Improvement:</strong> {result.feedback.improvementAreas}</p>
-                        <p><strong>Professional Development:</strong> {result.feedback.professionalDevelopment}</p>
+                    <div style={{ 
+                        padding: '25px', 
+                        border: '1px solid #2ecc71', 
+                        backgroundColor: '#e8f8f5',
+                        borderRadius: '8px',
+                        marginBottom: '30px'
+                    }}>
+                        <h2 style={{ color: '#27ae60', marginTop: 0 }}>Your Feedback</h2>
+                        <div style={{ 
+                            display: 'grid',
+                            gridTemplateColumns: '150px 1fr',
+                            gap: '15px',
+                            marginTop: '20px'
+                        }}>
+                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Name:</p>
+                            <p>{result.feedback.name}</p>
+                            
+                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Intern ID:</p>
+                            <p>{result.feedback.internId}</p>
+                            
+                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Strengths:</p>
+                            <p style={{ whiteSpace: 'pre-line' }}>{result.feedback.strengths}</p>
+                            
+                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Areas of Improvement:</p>
+                            <p style={{ whiteSpace: 'pre-line' }}>{result.feedback.improvementAreas}</p>
+                            
+                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Professional Development:</p>
+                            <p style={{ whiteSpace: 'pre-line' }}>{result.feedback.professionalDevelopment}</p>
+                        </div>
                     </div>
                 )}
 
-                <div style={{ marginTop: '30px' }}>
-                    <h3>Get Connected with Us</h3>
-                    <p>If you have any queries or want to connect with us, feel free to reach out through the following channels:</p>
-                    <ul style={{ listStyle: 'none', padding: 0 }}>
-                        <li>
-                            <a href="https://discord.gg/WFfj5XCA" target="_blank" style={{ textDecoration: 'none', color: '#0077b5' }}>
-                                Discord
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://www.linkedin.com/company/prasunet-company/" target="_blank" style={{ textDecoration: 'none', color: '#0077b5' }}>
-                                LinkedIn
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://t.me/+gguS8Aty2K5lOTM1" target="_blank" style={{ textDecoration: 'none', color: '#0077b5' }}>
-                                Telegram
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://whatsapp.com/channel/0029VbA5wvY4NVin6VvF3U2Q" target="_blank" style={{ textDecoration: 'none', color: '#0077b5' }}>
-                                WhatsApp
-                            </a>
-                        </li>
-                    </ul>
+                <div style={{ 
+                    backgroundColor: '#ffffff',
+                    padding: '25px',
+                    borderRadius: '8px',
+                    boxShadow: '0 2px 15px rgba(0,0,0,0.05)'
+                }}>
+                    <h3 style={{ 
+                        color: '#2c3e50',
+                        marginTop: 0,
+                        textAlign: 'center',
+                        fontSize: '22px'
+                    }}>
+                        Get Connected With Us
+                    </h3>
+                    <p style={{ 
+                        textAlign: 'center',
+                        color: '#7f8c8d',
+                        marginBottom: '25px'
+                    }}>
+                        Join our community and stay updated with the latest opportunities and news.
+                    </p>
+                    
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                        gap: '15px',
+                        textAlign: 'center'
+                    }}>
+                        <a href="https://discord.gg/WFfj5XCA" target="_blank" style={{ 
+                            textDecoration: 'none',
+                            padding: '12px',
+                            backgroundColor: '#7289da',
+                            color: 'white',
+                            borderRadius: '6px',
+                            fontWeight: '500',
+                            transition: 'all 0.3s ease'
+                        }}>
+                            Discord
+                        </a>
+                        <a href="https://www.linkedin.com/company/prasunet-company/" target="_blank" style={{ 
+                            textDecoration: 'none',
+                            padding: '12px',
+                            backgroundColor: '#0077b5',
+                            color: 'white',
+                            borderRadius: '6px',
+                            fontWeight: '500',
+                            transition: 'all 0.3s ease'
+                        }}>
+                            LinkedIn
+                        </a>
+                        <a href="https://t.me/+gguS8Aty2K5lOTM1" target="_blank" style={{ 
+                            textDecoration: 'none',
+                            padding: '12px',
+                            backgroundColor: '#0088cc',
+                            color: 'white',
+                            borderRadius: '6px',
+                            fontWeight: '500',
+                            transition: 'all 0.3s ease'
+                        }}>
+                            Telegram
+                        </a>
+                        <a href="https://whatsapp.com/channel/0029VbA5wvY4NVin6VvF3U2Q" target="_blank" style={{ 
+                            textDecoration: 'none',
+                            padding: '12px',
+                            backgroundColor: '#25D366',
+                            color: 'white',
+                            borderRadius: '6px',
+                            fontWeight: '500',
+                            transition: 'all 0.3s ease'
+                        }}>
+                            WhatsApp
+                        </a>
+                    </div>
                 </div>
             </div>
+
+            <footer style={{
+                textAlign: 'center',
+                padding: '20px',
+                backgroundColor: '#2c3e50',
+                color: '#ecf0f1',
+                marginTop: '40px'
+            }}>
+                <p>© {new Date().getFullYear()} Prasunet Company. All rights reserved.</p>
+                <p style={{ fontSize: '14px', opacity: 0.8 }}>Tech Bharat, Global Impact</p>
+            </footer>
         </div>
     );
 }
