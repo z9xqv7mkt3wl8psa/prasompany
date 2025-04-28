@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { initializeApp, getApps } from 'firebase/app';
-import { getFirestore, collection, query, where, getDocs, QuerySnapshot, doc, getDoc } from 'firebase/firestore';
+import { getFirestore, collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import Image from 'next/image';
 import loggo from './loggo.jpg';
 
@@ -28,57 +28,50 @@ interface CertificateData {
     assignedProject: string;
 }
 
-interface Result {
-    status?: string;
-    error?: string;
-    feedback?: FeedbackData;
-    certificate?: CertificateData;
-    mode?: 'feedback' | 'certificate';
-}
-
-const firebaseConfig = {
-    apiKey: "AIzaSyA_XvAPygXMMMddn7NsqsogzDpM-FXDgeI",
-    authDomain: "cert-final-c1409.firebaseapp.com",
-    projectId: "cert-final-c1409",
-    storageBucket: "cert-final-c1409.firebasestorage.app",
-    messagingSenderId: "948127703754",
-    appId: "1:948127703754:web:03289910ff99fb33ee4a33",
-    measurementId: "G-PBNBSHK135"
-};
-
-export default function CombinedVerification() {
+export default function InternDashboard() {
     const searchParams = useSearchParams();
     const token = searchParams.get('token');
-    const [result, setResult] = useState<Result | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [feedback, setFeedback] = useState<FeedbackData | null>(null);
+    const [certificate, setCertificate] = useState<CertificateData | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         if (token) {
             if (getApps().length === 0) {
-                initializeApp(firebaseConfig);
+                initializeApp({
+                    apiKey: "AIzaSyA_XvAPygXMMMddn7NsqsogzDpM-FXDgeI",
+                    authDomain: "cert-final-c1409.firebaseapp.com",
+                    projectId: "cert-final-c1409",
+                    storageBucket: "cert-final-c1409.firebasestorage.app",
+                    messagingSenderId: "948127703754",
+                    appId: "1:948127703754:web:03289910ff99fb33ee4a33",
+                    measurementId: "G-PBNBSHK135"
+                });
             }
             const db = getFirestore();
 
             const fetchData = async () => {
                 try {
-                    // First try to fetch feedback
-                    const feedbackCollection = collection(db, 'feedback');
-                    const feedbackQuery = query(feedbackCollection, where('token', '==', token));
+                    // Try to fetch feedback first
+                    const feedbackQuery = query(
+                        collection(db, 'feedback'),
+                        where('token', '==', token)
+                    );
                     const feedbackSnapshot = await getDocs(feedbackQuery);
 
                     if (!feedbackSnapshot.empty) {
-                        const docSnapshot = feedbackSnapshot.docs[0];
-                        const docData = docSnapshot.data() as FeedbackData;
-                        setResult({ 
-                            status: 'Found', 
-                            feedback: docData,
-                            mode: 'feedback'
-                        });
+                        const docData = feedbackSnapshot.docs[0].data() as FeedbackData;
+                        setFeedback(docData);
+                        setLoading(false);
                         return;
                     }
 
-                    // If no feedback found, try to verify certificate
-                    const certificatesCollection = collection(db, 'certificates');
-                    const certQuery = query(certificatesCollection, where('token', '==', token));
+                    // If no feedback, try to fetch certificate
+                    const certQuery = query(
+                        collection(db, 'certificates'),
+                        where('token', '==', token)
+                    );
                     const certSnapshot = await getDocs(certQuery);
 
                     if (!certSnapshot.empty) {
@@ -86,293 +79,169 @@ export default function CombinedVerification() {
                         const docData = docSnapshot.data();
                         
                         // Fetch assigned project
-                        const certificateDocRef = doc(db, 'certificates', docSnapshot.id);
-                        const certificateDoc = await getDoc(certificateDocRef);
-                        const assignedProject = certificateDoc.data()?.assignedProject || 'Assigned Project Not Found';
+                        const certDoc = await getDoc(doc(db, 'certificates', docSnapshot.id));
+                        const assignedProject = certDoc.data()?.assignedProject || 'Not specified';
 
-                        const certificateData: CertificateData = {
+                        setCertificate({
                             ...docData as CertificateData,
-                            assignedProject: assignedProject,
-                        };
-
-                        setResult({ 
-                            status: 'Verified', 
-                            certificate: certificateData,
-                            mode: 'certificate'
+                            assignedProject
                         });
-                        return;
+                    } else {
+                        setError('No data found for this token');
                     }
-
-                    // If neither found
-                    setResult({ status: 'Not Found' });
-
-                } catch (error) {
-                    console.error('Data fetch error:', error);
-                    setResult({ error: 'Error fetching data' });
+                } catch (err) {
+                    console.error('Fetch error:', err);
+                    setError('Error loading data');
+                } finally {
+                    setLoading(false);
                 }
             };
 
             fetchData();
+        } else {
+            setError('No token provided');
+            setLoading(false);
         }
     }, [token]);
 
     return (
-        <div style={{ 
-            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif", 
-            minHeight: '100vh',
-            backgroundColor: '#f9f9f9'
-        }}>
-            <header style={{ 
-                padding: '20px', 
-                backgroundColor: '#ffffff',
-                boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-                marginBottom: '30px',
-                textAlign: 'center'
-            }}>
-                <div style={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center',
-                    marginBottom: '15px'
-                }}>
+        <div className="min-h-screen bg-gray-50">
+            {/* Header */}
+            <header className="bg-white shadow-sm py-5 mb-8">
+                <div className="container mx-auto px-4 flex items-center justify-center">
                     <Image 
                         src={loggo}
-                        alt="Prasunet Logo" 
+                        alt="Company Logo"
                         width={80}
                         height={80}
-                        style={{ 
-                            borderRadius: '50%',
-                            objectFit: 'cover',
-                            marginRight: '15px'
-                        }} 
+                        className="rounded-full mr-4"
                     />
                     <div>
-                        <h1 style={{ 
-                            color: '#2c3e50', 
-                            margin: 0,
-                            fontSize: '28px',
-                            fontWeight: '600'
-                        }}>
-                            Prasunet Company
-                        </h1>
-                        <p style={{ 
-                            color: '#3498db', 
-                            margin: '5px 0 0',
-                            fontSize: '16px',
-                            fontStyle: 'italic',
-                            fontWeight: '500'
-                        }}>
-                            Tech Bharat, Global Impact
-                        </p>
+                        <h1 className="text-2xl font-bold text-gray-800">Prasunet Company</h1>
+                        <p className="text-blue-500 italic">Tech Bharat, Global Impact</p>
                     </div>
                 </div>
             </header>
 
-            <div style={{ 
-                maxWidth: '800px', 
-                margin: '0 auto', 
-                padding: '0 20px 40px'
-            }}>
-                {result === null && (
-                    <div style={{
-                        padding: '30px',
-                        textAlign: 'center',
-                        color: '#7f8c8d'
-                    }}>
-                        <div className="spinner" style={{
-                            border: '4px solid rgba(0, 0, 0, 0.1)',
-                            width: '36px',
-                            height: '36px',
-                            borderRadius: '50%',
-                            borderLeftColor: '#3498db',
-                            animation: 'spin 1s linear infinite',
-                            margin: '0 auto 20px'
-                        }}></div>
-                        <p>Loading data...</p>
+            {/* Main Content */}
+            <main className="container mx-auto px-4 pb-12">
+                {loading ? (
+                    <div className="text-center py-12">
+                        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-500 border-r-transparent"></div>
+                        <p className="mt-4 text-gray-600">Loading your data...</p>
                     </div>
-                )}
-
-                {result?.error && (
-                    <div style={{ 
-                        padding: '25px', 
-                        border: '1px solid #e74c3c', 
-                        backgroundColor: '#fdedec',
-                        borderRadius: '8px',
-                        marginBottom: '30px'
-                    }}>
-                        <h2 style={{ color: '#e74c3c', marginTop: 0 }}>Error</h2>
-                        <p style={{ color: '#e74c3c' }}>{result.error}</p>
+                ) : error ? (
+                    <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-8">
+                        <h2 className="text-red-700 font-bold">Error</h2>
+                        <p className="text-red-600">{error}</p>
                     </div>
-                )}
-
-                {result?.status === 'Not Found' && (
-                    <div style={{ 
-                        padding: '25px', 
-                        border: '1px solid #f39c12', 
-                        backgroundColor: '#fef5e7',
-                        borderRadius: '8px',
-                        marginBottom: '30px'
-                    }}>
-                        <h2 style={{ color: '#f39c12', marginTop: 0 }}>Not Found</h2>
-                        <p style={{ color: '#f39c12' }}>No feedback or certificate found with this token.</p>
-                    </div>
-                )}
-
-                {result?.mode === 'feedback' && result?.status === 'Found' && result.feedback && (
-                    <div style={{ 
-                        padding: '25px', 
-                        border: '1px solid #2ecc71', 
-                        backgroundColor: '#e8f8f5',
-                        borderRadius: '8px',
-                        marginBottom: '30px'
-                    }}>
-                        <h2 style={{ color: '#27ae60', marginTop: 0 }}>Your Feedback</h2>
-                        <div style={{ 
-                            display: 'grid',
-                            gridTemplateColumns: '150px 1fr',
-                            gap: '15px',
-                            marginTop: '20px'
-                        }}>
-                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Name:</p>
-                            <p>{result.feedback.name}</p>
-                            
-                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Intern ID:</p>
-                            <p>{result.feedback.internId}</p>
-                            
-                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Strengths:</p>
-                            <p style={{ whiteSpace: 'pre-line' }}>{result.feedback.strengths}</p>
-                            
-                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Areas of Improvement:</p>
-                            <p style={{ whiteSpace: 'pre-line' }}>{result.feedback.improvementAreas}</p>
-                            
-                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Professional Development:</p>
-                            <p style={{ whiteSpace: 'pre-line' }}>{result.feedback.professionalDevelopment}</p>
+                ) : feedback ? (
+                    <DashboardSection title="Your Feedback">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <InfoCard label="Name" value={feedback.name} />
+                            <InfoCard label="Intern ID" value={feedback.internId} />
+                            <InfoCard label="Strengths" value={feedback.strengths} fullWidth />
+                            <InfoCard label="Areas for Improvement" value={feedback.improvementAreas} fullWidth />
+                            <InfoCard label="Professional Development" value={feedback.professionalDevelopment} fullWidth />
                         </div>
-                    </div>
-                )}
-
-                {result?.mode === 'certificate' && result?.status === 'Verified' && result.certificate && (
-                    <div style={{ 
-                        padding: '25px', 
-                        border: '1px solid #2ecc71', 
-                        backgroundColor: '#e8f8f5',
-                        borderRadius: '8px',
-                        marginBottom: '30px'
-                    }}>
-                        <h2 style={{ color: '#27ae60', marginTop: 0 }}>Certificate Verified</h2>
-                        <div style={{ 
-                            display: 'grid',
-                            gridTemplateColumns: '150px 1fr',
-                            gap: '15px',
-                            marginTop: '20px'
-                        }}>
-                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Name:</p>
-                            <p>{result.certificate.certificateType.name}</p>
-                            
-                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Internship Domain:</p>
-                            <p>{result.certificate.certificateType.internshipDomain}</p>
-                            
-                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Intern ID:</p>
-                            <p>{result.certificate.internId}</p>
-                            
-                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Issued At:</p>
-                            <p>{new Date(result.certificate.issuedAt).toLocaleDateString()}</p>
-                            
-                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Valid Until:</p>
-                            <p>{new Date(result.certificate.expiryDate).toLocaleDateString()}</p>
-                            
-                            <p style={{ fontWeight: '600', color: '#2c3e50' }}>Assigned Project:</p>
-                            <p>{result.certificate.assignedProject}</p>
+                    </DashboardSection>
+                ) : certificate ? (
+                    <DashboardSection title="Certificate Verification">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <InfoCard label="Name" value={certificate.certificateType.name} />
+                            <InfoCard label="Internship Domain" value={certificate.certificateType.internshipDomain} />
+                            <InfoCard label="Intern ID" value={certificate.internId} />
+                            <InfoCard label="Issued Date" value={new Date(certificate.issuedAt).toLocaleDateString()} />
+                            <InfoCard label="Valid Until" value={new Date(certificate.expiryDate).toLocaleDateString()} />
+                            <InfoCard label="Assigned Project" value={certificate.assignedProject} />
                         </div>
+                    </DashboardSection>
+                ) : (
+                    <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4">
+                        <h2 className="text-yellow-700 font-bold">No Data Found</h2>
+                        <p className="text-yellow-600">No feedback or certificate found with this token.</p>
                     </div>
                 )}
 
-                <div style={{ 
-                    backgroundColor: '#ffffff',
-                    padding: '25px',
-                    borderRadius: '8px',
-                    boxShadow: '0 2px 15px rgba(0,0,0,0.05)'
-                }}>
-                    <h3 style={{ 
-                        color: '#2c3e50',
-                        marginTop: 0,
-                        textAlign: 'center',
-                        fontSize: '22px'
-                    }}>
-                        Get Connected With Us
-                    </h3>
-                    <p style={{ 
-                        textAlign: 'center',
-                        color: '#7f8c8d',
-                        marginBottom: '25px'
-                    }}>
-                        Join our community and stay updated with the latest opportunities and news.
-                    </p>
-                    
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-                        gap: '15px',
-                        textAlign: 'center'
-                    }}>
-                        <a href="https://discord.gg/WFfj5XCA" target="_blank" rel="noopener noreferrer" style={{ 
-                            textDecoration: 'none',
-                            padding: '12px',
-                            backgroundColor: '#7289da',
-                            color: 'white',
-                            borderRadius: '6px',
-                            fontWeight: '500',
-                            transition: 'all 0.3s ease'
-                        }}>
-                            Discord
-                        </a>
-                        <a href="https://www.linkedin.com/company/prasunet-company/" target="_blank" rel="noopener noreferrer" style={{ 
-                            textDecoration: 'none',
-                            padding: '12px',
-                            backgroundColor: '#0077b5',
-                            color: 'white',
-                            borderRadius: '6px',
-                            fontWeight: '500',
-                            transition: 'all 0.3s ease'
-                        }}>
-                            LinkedIn
-                        </a>
-                        <a href="https://t.me/+gguS8Aty2K5lOTM1" target="_blank" rel="noopener noreferrer" style={{ 
-                            textDecoration: 'none',
-                            padding: '12px',
-                            backgroundColor: '#0088cc',
-                            color: 'white',
-                            borderRadius: '6px',
-                            fontWeight: '500',
-                            transition: 'all 0.3s ease'
-                        }}>
-                            Telegram
-                        </a>
-                        <a href="https://whatsapp.com/channel/0029VbA5wvY4NVin6VvF3U2Q" target="_blank" rel="noopener noreferrer" style={{ 
-                            textDecoration: 'none',
-                            padding: '12px',
-                            backgroundColor: '#25D366',
-                            color: 'white',
-                            borderRadius: '6px',
-                            fontWeight: '500',
-                            transition: 'all 0.3s ease'
-                        }}>
-                            WhatsApp
-                        </a>
+                {/* Social Links */}
+                <div className="mt-12 bg-white rounded-lg shadow p-6">
+                    <h3 className="text-xl font-semibold text-center text-gray-800 mb-4">Connect With Us</h3>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <SocialLink 
+                            href="https://discord.gg/WFfj5XCA" 
+                            color="bg-indigo-600" 
+                            label="Discord" 
+                        />
+                        <SocialLink 
+                            href="https://www.linkedin.com/company/prasunet-company/" 
+                            color="bg-blue-700" 
+                            label="LinkedIn" 
+                        />
+                        <SocialLink 
+                            href="https://t.me/+gguS8Aty2K5lOTM1" 
+                            color="bg-blue-500" 
+                            label="Telegram" 
+                        />
+                        <SocialLink 
+                            href="https://whatsapp.com/channel/0029VbA5wvY4NVin6VvF3U2Q" 
+                            color="bg-green-500" 
+                            label="WhatsApp" 
+                        />
                     </div>
                 </div>
-            </div>
+            </main>
 
-            <footer style={{
-                textAlign: 'center',
-                padding: '20px',
-                backgroundColor: '#2c3e50',
-                color: '#ecf0f1',
-                marginTop: '40px'
-            }}>
-                <p>© {new Date().getFullYear()} Prasunet Company. All rights reserved.</p>
-                <p style={{ fontSize: '14px', opacity: 0.8 }}>Tech Bharat, Global Impact</p>
+            {/* Footer */}
+            <footer className="bg-gray-800 text-white py-6 mt-12">
+                <div className="container mx-auto px-4 text-center">
+                    <p>© {new Date().getFullYear()} Prasunet Company. All rights reserved.</p>
+                    <p className="text-sm opacity-80 mt-1">Tech Bharat, Global Impact</p>
+                </div>
             </footer>
         </div>
+    );
+}
+
+// Reusable components
+function DashboardSection({ title, children }: { title: string; children: React.ReactNode }) {
+    return (
+        <div className="bg-white rounded-lg shadow overflow-hidden mb-8">
+            <div className="bg-green-600 px-6 py-4">
+                <h2 className="text-xl font-bold text-white">{title}</h2>
+            </div>
+            <div className="p-6">
+                {children}
+            </div>
+        </div>
+    );
+}
+
+function InfoCard({ label, value, fullWidth = false }: { 
+    label: string; 
+    value: string; 
+    fullWidth?: boolean 
+}) {
+    return (
+        <div className={fullWidth ? 'md:col-span-2' : ''}>
+            <h3 className="font-semibold text-gray-700 mb-1">{label}</h3>
+            <p className="text-gray-800 whitespace-pre-line bg-gray-50 p-3 rounded">{value}</p>
+        </div>
+    );
+}
+
+function SocialLink({ href, color, label }: { 
+    href: string; 
+    color: string; 
+    label: string 
+}) {
+    return (
+        <a 
+            href={href} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className={`${color} text-white py-3 px-4 rounded-lg text-center font-medium hover:opacity-90 transition-opacity`}
+        >
+            {label}
+        </a>
     );
 }
