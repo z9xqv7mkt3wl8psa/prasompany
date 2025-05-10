@@ -17,14 +17,18 @@ import Industries from "@/components/home/Industries";
 import Image from "next/image"; 
 import { useState } from "react";
 import Link from "next/link";
-
+import Head from "next/head"; 
 
 
 export default function Home() {
   const [isHovered, setIsHovered] = useState(false);
 
   return (  
-    
+     <>
+      <Head>
+        {/* Google AdSense Meta Tag */}
+        <meta name="google-adsense-account" content="ca-pub-4153515799458258" />
+      </Head>
       <Navbar />
       <HeroSection />
 
@@ -161,7 +165,7 @@ export default function Home() {
       <FAQ />
       <ContactForm />
       <Footer />
-    </div>
+  </>
     
   );
 }
