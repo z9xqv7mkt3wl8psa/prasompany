@@ -23,11 +23,10 @@ import Head from "next/head";
 export default function Home() {
   const [isHovered, setIsHovered] = useState(false);
 
-  return ( <>
-    <Head>
-      <meta name="google-adsense-account" content="ca-pub-4153515799458258">
-    </Head>
-    <div>
+  return (   <>
+      <Head>
+        <meta name="google-adsense-account" content="ca-pub-4153515799458258" />
+      </Head>
       <Navbar />
       <HeroSection />
 
