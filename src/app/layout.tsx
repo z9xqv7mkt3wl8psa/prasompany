@@ -24,15 +24,19 @@ export default function RootLayout({
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": "https://prasunet.com/?s={search_term_string}"
+        "urlTemplate": "https://prasunet.com/?s={search_term_string}",
       },
-      "query-input": "required name=search_term_string"
-    }
+      "query-input": "required name=search_term_string",
+    },
   };
 
   return (
     <html lang="en">
       <head>
+        {/* ✅ Google AdSense meta tag */}
+        <meta name="google-adsense-account" content="ca-pub-4153515799458258" />
+
+        {/* Structured data for SEO */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
