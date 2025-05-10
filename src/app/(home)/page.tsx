@@ -1,5 +1,5 @@
 "use client";
-
+import Head from "next/head";
 import CareerSection from "@/components/home/careerS";
 import ClientSection from "@/components/home/client";
 import ContactForm from "@/components/home/Cont";
@@ -22,7 +22,14 @@ import Link from "next/link";
 export default function Home() {
   const [isHovered, setIsHovered] = useState(false);
 
-  return (
+  return (  <>
+    <Head>
+      <script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4153515799458258"
+        crossOrigin="anonymous"
+      ></script>
+    </Head>
     <div>
       <Navbar />
       <HeroSection />
