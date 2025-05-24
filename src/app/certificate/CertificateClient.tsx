@@ -6,7 +6,7 @@ import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore, collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 
 interface CertificateData {
-  certificateType: {
+  certificateType: { 
     internshipDomain: string;
     name: string;
   };
