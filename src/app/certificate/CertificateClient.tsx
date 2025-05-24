@@ -3,14 +3,23 @@
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { initializeApp, getApps } from 'firebase/app';
-import { getFirestore, collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+  QuerySnapshot,
+  doc,
+  getDoc
+} from 'firebase/firestore';
 
 interface CertificateData {
   fullName: string;
-  collegeName: string;
-  domainOfInternship: string;
   fatherName: string;
   gender: string;
+  collegeName: string;
+  domainOfInternship: string;
   internId: string;
   internshipDuration: string;
   typeOfInternship: string;
@@ -25,13 +34,13 @@ interface Result {
 }
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyA_XvAPygXMMMddn7NsqsogzDpM-FXDgeI',
-  authDomain: 'cert-final-c1409.firebaseapp.com',
-  projectId: 'cert-final-c1409',
-  storageBucket: 'cert-final-c1409.firebasestorage.app',
-  messagingSenderId: '948127703754',
-  appId: '1:948127703754:web:03289910ff99fb33ee4a33',
-  measurementId: 'G-PBNBSHK135',
+  apiKey: "AIzaSyA_XvAPygXMMMddn7NsqsogzDpM-FXDgeI",
+  authDomain: "cert-final-c1409.firebaseapp.com",
+  projectId: "cert-final-c1409",
+  storageBucket: "cert-final-c1409.firebasestorage.app",
+  messagingSenderId: "948127703754",
+  appId: "1:948127703754:web:03289910ff99fb33ee4a33",
+  measurementId: "G-PBNBSHK135"
 };
 
 export default function CertificateClient() {
@@ -40,59 +49,60 @@ export default function CertificateClient() {
   const [result, setResult] = useState<Result | null>(null);
 
   useEffect(() => {
-    if (!token) return;
-
-    if (getApps().length === 0) {
-      initializeApp(firebaseConfig);
-    }
-    const db = getFirestore();
-
-    const verifyToken = async () => {
-      try {
-        const certificatesCollection = collection(db, 'certificates_verify');
-        const q = query(certificatesCollection, where('token', '==', token));
-        const querySnapshot = await getDocs(q);
-
-        if (!querySnapshot.empty) {
-          const docSnapshot = querySnapshot.docs[0];
-          const certificateDoc = await getDoc(doc(db, 'certificates_verify', docSnapshot.id));
-          const data = certificateDoc.data();
-
-          if (!data) {
-            setResult({ status: 'Not Verified' });
-            return;
-          }
-
-          const certificateData: CertificateData = {
-            fullName: data.fullName || '',
-            collegeName: data.collegeName || '',
-            domainOfInternship: data.domainOfInternship || '',
-            fatherName: data.fatherName || '',
-            gender: data.gender || '',
-            internId: data.internId || '',
-            internshipDuration: data.internshipDuration || '',
-            typeOfInternship: data.typeOfInternship || '',
-            assignedProject: data.assignedProject || '',
-            token: data.token || '',
-          };
-
-          setResult({ status: 'Verified', certificate: certificateData });
-        } else {
-          setResult({ status: 'Not Verified' });
-        }
-      } catch (error) {
-        console.error('Verification error:', error);
-        setResult({ error: 'Error during verification' });
+    if (token) {
+      if (getApps().length === 0) {
+        initializeApp(firebaseConfig);
       }
-    };
+      const db = getFirestore();
 
-    verifyToken();
+      const verifyToken = async () => {
+        try {
+          const certificatesCollection = collection(db, 'certificates_verify');
+          const q = query(certificatesCollection, where('token', '==', token));
+          const querySnapshot: QuerySnapshot = await getDocs(q);
+
+          if (!querySnapshot.empty) {
+            const docSnapshot = querySnapshot.docs[0];
+            const certificateDocRef = doc(db, 'certificates_verify', docSnapshot.id);
+            const certificateDoc = await getDoc(certificateDocRef);
+            const data = certificateDoc.data();
+
+            if (!data) {
+              setResult({ status: 'Not Verified' });
+              return;
+            }
+
+            // Map firestore fields with exact field names (including spaces)
+            const certificateData: CertificateData = {
+              fullName: data['Full Name'] || '',
+              fatherName: data['Father Name'] || '',
+              gender: data['Gender'] || '',
+              collegeName: data['College Name'] || '',
+              domainOfInternship: data['Domain of the Internship'] || '',
+              internId: data['Intern ID'] || '',
+              internshipDuration: data['Internship Duration'] || '',
+              typeOfInternship: data['Type of Internship'] || '',
+              assignedProject: data['Your assigned Full Project Name'] || '',
+              token: data['token'] || '',
+            };
+
+            setResult({ status: 'Verified', certificate: certificateData });
+          } else {
+            setResult({ status: 'Not Verified' });
+          }
+        } catch (error) {
+          console.error('Verification error:', error);
+          setResult({ error: 'Error during verification' });
+        }
+      };
+      verifyToken();
+    }
   }, [token]);
 
   return (
     <div style={{ fontFamily: 'Arial, sans-serif' }}>
       <header style={{ textAlign: 'center', padding: '20px', backgroundColor: '#f0f0f0', marginBottom: '20px' }}>
-        <h1 style={{ margin: '0', color: '#333' }}>Prasunet Company</h1>
+        <h1 style={{ margin: 0, color: '#333' }}>Prasunet Company</h1>
         <p style={{ margin: '5px 0', color: '#666', fontStyle: 'italic' }}>Tech Bharat, Global Impact.</p>
       </header>
 
@@ -118,15 +128,15 @@ export default function CertificateClient() {
             <h1>Verification Result</h1>
             <p style={{ color: 'green' }}>Certificate Verified</p>
             <div style={{ textAlign: 'left', marginTop: '20px' }}>
-              <p><strong>Full Name:</strong> {result.certificates_verify.fullName}</p>
-              <p><strong>Father Name:</strong> {result.certificates_verify.fatherName}</p>
-              <p><strong>Gender:</strong> {result.certificates_verify.gender}</p>
-              <p><strong>College Name:</strong> {result.certificates_verify.collegeName}</p>
-              <p><strong>Internship Domain:</strong> {result.certificates_verify.domainOfInternship}</p>
-              <p><strong>Intern ID:</strong> {result.certificates_verify.internId}</p>
-              <p><strong>Internship Duration:</strong> {result.certificates_verify.internshipDuration}</p>
-              <p><strong>Type of Internship:</strong> {result.certificates_verify.typeOfInternship}</p>
-              <p><strong>Assigned Project:</strong> {result.certificates_verify.assignedProject}</p>
+              <p><strong>Full Name:</strong> {result.certificate.fullName}</p>
+              <p><strong>Father Name:</strong> {result.certificate.fatherName}</p>
+              <p><strong>Gender:</strong> {result.certificate.gender}</p>
+              <p><strong>College Name:</strong> {result.certificate.collegeName}</p>
+              <p><strong>Internship Domain:</strong> {result.certificate.domainOfInternship}</p>
+              <p><strong>Intern ID:</strong> {result.certificate.internId}</p>
+              <p><strong>Internship Duration:</strong> {result.certificate.internshipDuration}</p>
+              <p><strong>Type of Internship:</strong> {result.certificate.typeOfInternship}</p>
+              <p><strong>Assigned Project:</strong> {result.certificate.assignedProject}</p>
             </div>
           </div>
         )}
