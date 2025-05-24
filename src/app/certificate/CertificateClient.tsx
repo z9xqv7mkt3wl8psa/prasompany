@@ -118,15 +118,15 @@ export default function CertificateClient() {
             <h1>Verification Result</h1>
             <p style={{ color: 'green' }}>Certificate Verified</p>
             <div style={{ textAlign: 'left', marginTop: '20px' }}>
-              <p><strong>Full Name:</strong> {result.certificate.fullName}</p>
-              <p><strong>Father Name:</strong> {result.certificate.fatherName}</p>
-              <p><strong>Gender:</strong> {result.certificate.gender}</p>
-              <p><strong>College Name:</strong> {result.certificate.collegeName}</p>
-              <p><strong>Internship Domain:</strong> {result.certificate.domainOfInternship}</p>
-              <p><strong>Intern ID:</strong> {result.certificate.internId}</p>
-              <p><strong>Internship Duration:</strong> {result.certificate.internshipDuration}</p>
-              <p><strong>Type of Internship:</strong> {result.certificate.typeOfInternship}</p>
-              <p><strong>Assigned Project:</strong> {result.certificate.assignedProject}</p>
+              <p><strong>Full Name:</strong> {result.certificates_verify.fullName}</p>
+              <p><strong>Father Name:</strong> {result.certificates_verify.fatherName}</p>
+              <p><strong>Gender:</strong> {result.certificates_verify.gender}</p>
+              <p><strong>College Name:</strong> {result.certificates_verify.collegeName}</p>
+              <p><strong>Internship Domain:</strong> {result.certificates_verify.domainOfInternship}</p>
+              <p><strong>Intern ID:</strong> {result.certificates_verify.internId}</p>
+              <p><strong>Internship Duration:</strong> {result.certificates_verify.internshipDuration}</p>
+              <p><strong>Type of Internship:</strong> {result.certificates_verify.typeOfInternship}</p>
+              <p><strong>Assigned Project:</strong> {result.certificates_verify.assignedProject}</p>
             </div>
           </div>
         )}
