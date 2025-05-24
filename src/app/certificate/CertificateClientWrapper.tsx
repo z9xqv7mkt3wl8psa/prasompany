@@ -7,5 +7,5 @@ const CertificateClient = dynamic(() => import('./CertificateClient'), {
 });
 
 export default function CertificateClientWrapper() {
-  return <CertificateClient />;
+  return <CertificateClient />; 
 }
